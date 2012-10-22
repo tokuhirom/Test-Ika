@@ -18,7 +18,7 @@ our %HOOKS;
 our $REPORTER = do {
     my $module = $ENV{TEST_MAX_REPORTER};
     unless ($module) {
-        $module = $ENV{HARNESS_ACTIVE} ? 'TAP' : 'Spec';
+        $module = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
     $module = $module =~ s/^\+// ? $module : "Test::Max::Reporter::$module";
     Module::Load::load($module);
