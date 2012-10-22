@@ -13,9 +13,13 @@ my $build = Module::Build->new(
     configure_requires   => { 'Module::Build' => '0.38' },
     requires             => {
         perl => '5.010001',
-        # 'Exporter'                      => '0',
+        'Exporter'                      => '0',
+        'Test::More'                    => '0.98',
         'parent'                        => '0',
-        # 'Plack'                         => '0.9949',
+        'Term::Encoding' => 0,
+        'Module::Load' => 0,
+        'Scope::Guard' => 0,
+        'Try::Tiny' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
