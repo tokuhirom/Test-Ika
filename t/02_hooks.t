@@ -14,11 +14,14 @@ my @RESULT;
     use Test::More;
 
     describe 'foo' => sub {
-        before_each {
+        before {
             push @RESULT, 'OUTER BEFORE';
         };
+        before_each {
+            push @RESULT, 'OUTER BEFORE_EACH';
+        };
         after_each {
-            push @RESULT, 'OUTER AFTER';
+            push @RESULT, 'OUTER AFTER_EACH';
         };
         it p => sub {
             push @RESULT, 'test p';
@@ -42,10 +45,11 @@ my @RESULT;
 }
 is(join("\n", @RESULT), join("\n", (
     'OUTER BEFORE',
+    'OUTER BEFORE_EACH',
         'test p',
-    'OUTER AFTER',
+    'OUTER AFTER_EACH',
 
-    'OUTER BEFORE',
+    'OUTER BEFORE_EACH',
         'BEFORE INNER',
             'test y',
         'AFTER INNER',
@@ -53,7 +57,7 @@ is(join("\n", @RESULT), join("\n", (
         'BEFORE INNER',
             'test z',
         'AFTER INNER',
-    'OUTER AFTER',
+    'OUTER AFTER_EACH',
 )));
 
 done_testing;

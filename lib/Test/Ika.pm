@@ -10,7 +10,11 @@ use Test::Name::FromLine;
 
 use parent qw/Exporter/;
 
-our @EXPORT = (qw(describe it before_each runtests after_each context));
+our @EXPORT = (qw(
+    describe it context
+    before after before_each after_each
+    runtests
+));
 
 our @BLOCKS;
 our $EXECUTING;
@@ -81,6 +85,18 @@ sub it {
     } finally {
         $_->() for @{$Test::Ika::HOOKS{after_each} || []};
     };
+}
+
+sub before(&) {
+    my $code = shift;
+    # push @{$Test::Ika::HOOKS{before}}, $code;
+    $code->();
+}
+
+sub after(&) {
+    my $code = shift;
+    # push @{$Test::Ika::HOOKS{after}}, $code;
+    $code->();
 }
 
 sub before_each(&) {
