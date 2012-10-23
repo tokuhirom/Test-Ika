@@ -18,7 +18,8 @@ sub new {
 
     return bless {
         failed => 0,
-        describe => []
+        describe => [],
+        results => [],
     }, $class;
 }
 
@@ -65,18 +66,10 @@ sub finalize {
 
         for my $i (0..$self->{failed}-1) {
             printf "  %s)\n", $i+1;
-            for my $row (@{$self->{results}->[$i]}) {
-                if ($row->[0] eq 'ok') {
-                    my $caller = $row->[3];
-                    printf "    %s line %d\n", $caller->[1], $caller->[2];
-                } elsif ($row->[0] eq 'diag' || $row->[0] eq 'note') {
-                    my $msg = $row->[1];
-                    my $indent = '    ';
-                    $msg =~ s{\n(?!\z)}{\n$indent}sg;
-                    printf "    %s\n", $msg;
-                } else {
-                    die; # Should not reach here
-                }
+            my $indent = ' ' x 4;
+            for my $msg ($self->{results}->[$i]) {
+                $msg =~ s{\n(?!\z)}{\n$indent}sg;
+                print $indent . $msg;
             }
         }
     }

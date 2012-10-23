@@ -6,6 +6,7 @@ our $VERSION = '0.01';
 
 use Try::Tiny;
 use Module::Load;
+use Test::Name::FromLine;
 
 use parent qw/Exporter/;
 
@@ -53,33 +54,23 @@ sub it {
     $_->() for @{$Test::Max::HOOKS{before_each} || []};
 
     try {
-        my @RESULTS;
+        open my $fh, '>', \my $output;
         my $ok = do {
             no warnings 'redefine';
-            my $ok = 0;
-            my $fail = 0;
-            local *Test::Builder::diag = sub {
-                my ($self, $msg) = @_;
-                push @RESULTS, ['diag', $msg];
-            };
-            local *Test::Builder::note = sub {
-                my ($self, $msg) = @_;
-                push @RESULTS, ['note', $msg];
-            };
-            local *Test::Builder::ok = sub {
-                my ($self, $test, $msg) = @_;
-                push @RESULTS, ['ok', $test, $msg, [caller($Test::Builder::Level)]];
-                if ($test) {
-                    $ok++;
-                } else {
-                    $fail++;
-                }
-                return $test; # ok() returns $test.
-            };
-            $code->();
-            $ok > 0 && $fail == 0;
+            my $builder = Test::Builder->create();
+            local $Test::Builder::Test = $builder;
+            $builder->no_header(1);
+            $builder->no_ending(1);
+            $builder->output($fh);
+            $builder->failure_output($fh);
+            $builder->todo_output($fh);
+
+                $code->();
+
+            $builder->finalize();
+            $builder->is_passing();
         };
-        $REPORTER->it($name, !!$ok, \@RESULTS);
+        $REPORTER->it($name, !!$ok, $output);
     } catch {
         $REPORTER->exception($_);
     };
