@@ -2,11 +2,11 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Max::Reporter::Spec;
-use Test::Max::Reporter::TAP;
+use Test::Ika::Reporter::Spec;
+use Test::Ika::Reporter::TAP;
 
-my %spec = map { $_ => 1 } functions('Test::Max::Reporter::Spec');
-for (functions('Test::Max::Reporter::TAP')) {
+my %spec = map { $_ => 1 } functions('Test::Ika::Reporter::Spec');
+for (functions('Test::Ika::Reporter::TAP')) {
     ok delete $spec{$_}, $_;
 }
 is(join('', keys %spec), '');

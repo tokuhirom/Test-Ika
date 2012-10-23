@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Max;
+use Test::Ika;
 
 {
     package Array;

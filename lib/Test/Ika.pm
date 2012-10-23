@@ -1,4 +1,4 @@
-package Test::Max;
+package Test::Ika;
 use strict;
 use warnings;
 use 5.010001;
@@ -21,7 +21,7 @@ our $REPORTER = do {
     unless ($module) {
         $module = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
-    $module = $module =~ s/^\+// ? $module : "Test::Max::Reporter::$module";
+    $module = $module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module";
     Module::Load::load($module);
     $module->new();
 };
@@ -41,7 +41,7 @@ sub _run_describe {
 
     my $guard = $REPORTER->describe($name);
     try {
-        local %Test::Max::HOOKS;
+        local %Test::Ika::HOOKS;
         $code->();
     } catch {
         $REPORTER->exception($_);
@@ -51,7 +51,7 @@ sub _run_describe {
 sub it {
     my ($name, $code) = @_;
 
-    $_->() for @{$Test::Max::HOOKS{before_each} || []};
+    $_->() for @{$Test::Ika::HOOKS{before_each} || []};
 
     try {
         open my $fh, '>', \my $output;
@@ -74,18 +74,18 @@ sub it {
     } catch {
         $REPORTER->exception($_);
     } finally {
-        $_->() for @{$Test::Max::HOOKS{after_each} || []};
+        $_->() for @{$Test::Ika::HOOKS{after_each} || []};
     };
 }
 
 sub before_each(&) {
     my $code = shift;
-    push @{$Test::Max::HOOKS{before_each}}, $code;
+    push @{$Test::Ika::HOOKS{before_each}}, $code;
 }
 
 sub after_each(&) {
     my $code = shift;
-    push @{$Test::Max::HOOKS{after_each}}, $code;
+    push @{$Test::Ika::HOOKS{after_each}}, $code;
 }
 
 sub runtests {
@@ -110,11 +110,11 @@ __END__
 
 =head1 NAME
 
-Test::Max - B!D!D! B!D!D!
+Test::Ika - B!D!D! B!D!D!
 
 =head1 SYNOPSIS
 
-    use Test::Max;
+    use Test::Ika;
     use Test::Expects;
 
     describe 'MessageFilter' => sub {
@@ -138,7 +138,7 @@ Test::Max - B!D!D! B!D!D!
 
 =head1 DESCRIPTION
 
-Test::Max is yet another BDD framework for Perl5.
+Test::Ika is yet another BDD framework for Perl5.
 
 This module provides pretty output for testing.
 
@@ -148,9 +148,9 @@ This module provides pretty output for testing.
 
 =begin html
 
-<div><img src="https://raw.github.com/tokuhirom/Test-Max/master/img/spec.png"></div>
+<div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec.png"></div>
 
-<div><img src="https://raw.github.com/tokuhirom/Test-Max/master/img/spec2.png"></div>
+<div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec2.png"></div>
 
 =end html
 
@@ -158,7 +158,7 @@ This module provides pretty output for testing.
 
 =begin html
 
-<img src="https://raw.github.com/tokuhirom/Test-Max/master/img/tap.png">
+<img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/tap.png">
 
 =end html
 

@@ -1,7 +1,7 @@
 .travis.yml
 Build.PL
 Changes
-lib/Test/Max.pm
+lib/Test/Ika.pm
 MANIFEST			This list of files
 t/00_compile.t
 xt/01_podspell.t

@@ -24,8 +24,8 @@ my $build = Module::Build->new(
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
-    name        => 'Test-Max',
-    module_name => 'Test::Max',
+    name        => 'Test-Ika',
+    module_name => 'Test::Ika',
 
     # script_files => [''],
 

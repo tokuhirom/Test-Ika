@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use lib 'lib';
-use Test::Max;
+use Test::Ika;
 use Test::More;
 
 {

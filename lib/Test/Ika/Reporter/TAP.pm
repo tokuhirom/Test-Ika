@@ -1,4 +1,4 @@
-package Test::Max::Reporter::TAP;
+package Test::Ika::Reporter::TAP;
 use strict;
 use warnings;
 use utf8;

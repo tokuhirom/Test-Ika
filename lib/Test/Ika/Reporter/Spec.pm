@@ -1,4 +1,4 @@
-package Test::Max::Reporter::Spec;
+package Test::Ika::Reporter::Spec;
 use strict;
 use warnings;
 use utf8;

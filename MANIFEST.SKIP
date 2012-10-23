@@ -85,7 +85,7 @@ perltidy.ERR$
 ^README.pod$
 ^README.mkdn$
 ^tags$
-^Test-Max-
+^Test-Ika-
 ^MYMETA\.
 \b_build
 ^MANIFEST\.SKIP
