@@ -150,7 +150,9 @@ This module provides pretty output for testing.
 
 =begin html
 
-<img src="https://raw.github.com/tokuhirom/Test-Max/master/img/spec.png">
+<div><img src="https://raw.github.com/tokuhirom/Test-Max/master/img/spec.png"></div>
+
+<div><img src="https://raw.github.com/tokuhirom/Test-Max/master/img/spec2.png"></div>
 
 =end html
 

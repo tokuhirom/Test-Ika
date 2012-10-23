@@ -9,7 +9,7 @@ use Test::Max;
     sub new { bless [], shift }
     sub push {
         my $self = shift;
-        if (0) {
+        if (1) {
             unshift @{$self}, @_ # <- BUG!
         } else {
             push @$self, @_
