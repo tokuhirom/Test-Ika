@@ -39,7 +39,7 @@ sub it {
 sub finalize {
     my $self = shift;
     if ($self->{finalized}++) {
-        die "Do not finalize twice.";
+        Carp::croak("Do not finalize twice.");
     } else {
         my $builder = Test::More->builder;
         $builder->done_testing;
