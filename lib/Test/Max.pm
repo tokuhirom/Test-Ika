@@ -164,6 +164,10 @@ This module provides pretty output for testing.
 
 =back
 
+=head1 Why Ika?
+
+This module is dedicated to ikasam_a, a famous Japanese testing engineer.
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
