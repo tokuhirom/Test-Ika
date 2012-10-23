@@ -141,6 +141,28 @@ Test::Max - B!D!D! B!D!D!
 
 Test::Max is yet another BDD framework for Perl5.
 
+This module provides pretty output for testing.
+
+=over 4
+
+=item The spec mode(default)
+
+=begin html
+
+<img src="src/spec.png">
+
+=end html
+
+=item TAP output(it's enabled under $ENV{HARNESS_ACTIVE} is true)
+
+=begin html
+
+<img src="src/tap.png">
+
+=end html
+
+=back
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
