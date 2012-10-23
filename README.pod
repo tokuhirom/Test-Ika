@@ -117,6 +117,7 @@ Test::Max - B!D!D! B!D!D!
 =head1 SYNOPSIS
 
     use Test::Max;
+    use Test::Expects;
 
     describe 'MessageFilter' => sub {
         my $filter;
