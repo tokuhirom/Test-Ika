@@ -20,7 +20,7 @@ my $build = Module::Build->new(
         'Module::Load' => 0,
         'Scope::Guard' => 0,
         'Try::Tiny' => 0,
-        'Test::Name::FromLine' => 0,
+        'Test::Name::FromLine' => 0.06,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },

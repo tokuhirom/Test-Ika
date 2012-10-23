@@ -73,12 +73,19 @@ sub it {
         $REPORTER->it($name, !!$ok, $output);
     } catch {
         $REPORTER->exception($_);
+    } finally {
+        $_->() for @{$Test::Max::HOOKS{after_each} || []};
     };
 }
 
 sub before_each(&) {
     my $code = shift;
     push @{$Test::Max::HOOKS{before_each}}, $code;
+}
+
+sub after_each(&) {
+    my $code = shift;
+    push @{$Test::Max::HOOKS{after_each}}, $code;
 }
 
 sub runtests {
