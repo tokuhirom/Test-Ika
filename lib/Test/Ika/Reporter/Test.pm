@@ -1,14 +1,18 @@
-package Test::Ika::Reporter::TAP;
+package Test::Ika::Reporter::Test;
 use strict;
 use warnings;
 use utf8;
-use Test::More ();
-use Scope::Guard ();
+use Scope::Guard;
 
 sub new {
     my $class = shift;
-    return bless {describe => []}, $class;
+    return bless {
+        describe => [],
+        report => [],
+    }, $class;
 }
+
+sub report { $_[0]->{report} }
 
 sub describe {
     my ($self, $name) = @_;
@@ -23,27 +27,31 @@ sub exception {
     my ($self, $name) = @_;
     $name =~ s/\n\Z//;
 
-    local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my $builder = Test::More->builder;
-    $builder->ok(0, "Error: $name");
+    push @{$self->{report}}, [exception => $name];
 }
 
 sub it {
     my ($self, $name, $test) = @_;
 
-    my $builder = Test::More->builder;
-    $builder->ok($test, '(' . join("/", @{$self->{describe}}) . ') ' . $name);
+    push @{$self->{report}}, ['it', $name, $test, [@{$self->{describe}}]];
 }
 
 sub finalize {
     my $self = shift;
     if ($self->{finalized}++) {
         Carp::croak("Do not finalize twice.");
-    } else {
-        my $builder = Test::More->builder;
-        $builder->done_testing;
     }
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Test::Ika::Reporter::Test - testing tester
+
+=head1 DESCRIPTION
+
+This module captures testing result in Test::Ika.
+
 

@@ -10,7 +10,7 @@ use Test::Name::FromLine;
 
 use parent qw/Exporter/;
 
-our @EXPORT = (qw(describe it before_each runtests));
+our @EXPORT = (qw(describe it before_each runtests after_each context));
 
 our @BLOCKS;
 our $EXECUTING;
@@ -35,16 +35,21 @@ sub describe {
         push @BLOCKS, [$name, $code];
     }
 }
+*context = *describe;
 
 sub _run_describe {
     my ($name, $code) = @_;
 
     my $guard = $REPORTER->describe($name);
+    my %hooks = %HOOKS;
     try {
+        $_->() for @{$hooks{before_each} || []};
         local %Test::Ika::HOOKS;
         $code->();
     } catch {
         $REPORTER->exception($_);
+    } finally {
+        $_->() for @{$hooks{after_each} || []};
     };
 }
 
@@ -90,7 +95,7 @@ sub after_each(&) {
 
 sub runtests {
     local $EXECUTING = 1;
-    for my $block (@BLOCKS) {
+    while (my $block = shift @BLOCKS) {
         my ($name, $code) = @$block;
         _run_describe($name, $code);
     }

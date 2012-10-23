@@ -4,17 +4,19 @@ use utf8;
 use Test::More;
 use Test::Ika::Reporter::Spec;
 use Test::Ika::Reporter::TAP;
+use Test::Ika::Reporter::Test;
 
-my %spec = map { $_ => 1 } functions('Test::Ika::Reporter::Spec');
-for (functions('Test::Ika::Reporter::TAP')) {
-    ok delete $spec{$_}, $_;
-}
-is(join('', keys %spec), '');
+check('Test::Ika::Reporter::TAP');
+check('Test::Ika::Reporter::Test');
 
 done_testing;
 
-sub filter {
-    grep !/^import$/, grep /^[a-z]/, @_;
+sub check {
+    my $target = shift;
+    my %target_has = map { $_ => 1 } functions($target);
+    for (functions('Test::Ika::Reporter::Spec')) {
+        ok $target_has{$_}, $_;
+    }
 }
 sub functions {
     my $klass = shift;
