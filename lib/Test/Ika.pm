@@ -8,17 +8,20 @@ use Try::Tiny;
 use Module::Load;
 use Test::Name::FromLine;
 
+use Test::Ika::Context;
+use Test::Ika::It;
+
 use parent qw/Exporter/;
 
 our @EXPORT = (qw(
     describe it context
-    before after before_each after_each
+    before_all after_all before_each after_each
     runtests
 ));
 
-our @BLOCKS;
-our $EXECUTING;
-our %HOOKS;
+
+our $FINISHED;
+our $ROOT = our $CURRENT = Test::Ika::Context->new(name => 'root');
 
 our $REPORTER = do {
     my $module = $ENV{TEST_MAX_REPORTER};
@@ -33,93 +36,54 @@ our $REPORTER = do {
 sub describe {
     my ($name, $code) = @_;
 
-    if ($EXECUTING) {
-        _run_describe($name, $code);
-    } else {
-        push @BLOCKS, [$name, $code];
+    my $current = $CURRENT;
+    my $context = Test::Ika::Context->new(
+        name   => $name,
+        parent => $current,
+    );
+    {
+        local $CURRENT = $context;
+        $code->();
     }
+    $current->push_context($context);
 }
 *context = *describe;
 
-sub _run_describe {
-    my ($name, $code) = @_;
-
-    my $guard = $REPORTER->describe($name);
-    my %hooks = %HOOKS;
-    try {
-        $_->() for @{$hooks{before_each} || []};
-        local %Test::Ika::HOOKS;
-        $code->();
-    } catch {
-        $REPORTER->exception($_);
-    } finally {
-        $_->() for @{$hooks{after_each} || []};
-    };
-}
-
 sub it {
     my ($name, $code) = @_;
-
-    $_->() for @{$Test::Ika::HOOKS{before_each} || []};
-
-    try {
-        open my $fh, '>', \my $output;
-        my $ok = do {
-            no warnings 'redefine';
-            my $builder = Test::Builder->create();
-            local $Test::Builder::Test = $builder;
-            $builder->no_header(1);
-            $builder->no_ending(1);
-            $builder->output($fh);
-            $builder->failure_output($fh);
-            $builder->todo_output($fh);
-
-                $code->();
-
-            $builder->finalize();
-            $builder->is_passing();
-        };
-        $REPORTER->it($name, !!$ok, $output);
-    } catch {
-        $REPORTER->exception($_);
-    } finally {
-        $_->() for @{$Test::Ika::HOOKS{after_each} || []};
-    };
+    my $it = Test::Ika::It->new(name => $name, code => $code);
+    $CURRENT->push_it($it);
 }
 
-sub before(&) {
+sub before_all(&) {
     my $code = shift;
-    # push @{$Test::Ika::HOOKS{before}}, $code;
-    $code->();
+    $CURRENT->add_trigger(before_all => $code);
 }
 
-sub after(&) {
+sub after_all(&) {
     my $code = shift;
-    # push @{$Test::Ika::HOOKS{after}}, $code;
-    $code->();
+    $CURRENT->add_trigger(after_all => $code);
 }
 
 sub before_each(&) {
     my $code = shift;
-    push @{$Test::Ika::HOOKS{before_each}}, $code;
+    $CURRENT->add_trigger(before_each => $code);
 }
 
 sub after_each(&) {
     my $code = shift;
-    push @{$Test::Ika::HOOKS{after_each}}, $code;
+    $CURRENT->add_trigger(after_each => $code);
 }
 
 sub runtests {
-    local $EXECUTING = 1;
-    while (my $block = shift @BLOCKS) {
-        my ($name, $code) = @$block;
-        _run_describe($name, $code);
-    }
+    $ROOT->run();
+
+    $FINISHED++;
     $REPORTER->finalize();
 }
 
 END {
-    if (@BLOCKS) {
+    unless ($FINISHED) {
         runtests();
     }
 }

@@ -14,8 +14,11 @@ my @RESULT;
     use Test::More;
 
     describe 'foo' => sub {
-        before {
+        before_all {
             push @RESULT, 'OUTER BEFORE';
+        };
+        after_all {
+            push @RESULT, 'OUTER AFTER';
         };
         before_each {
             push @RESULT, 'OUTER BEFORE_EACH';
@@ -27,11 +30,17 @@ my @RESULT;
             push @RESULT, 'test p';
         };
         describe 'x' => sub {
+            before_all {
+                push @RESULT,  'BEFORE_ALL INNER';
+            };
+            after_all {
+                push @RESULT,  'AFTER_ALL INNER';
+            };
             before_each {
-                push @RESULT, 'BEFORE INNER';
+                push @RESULT, 'BEFORE_EACH INNER';
             };
             after_each {
-                push @RESULT, 'AFTER INNER';
+                push @RESULT, 'AFTER_EACH INNER';
             };
             it y => sub {
                 push @RESULT, 'test y';
@@ -45,19 +54,24 @@ my @RESULT;
 }
 is(join("\n", @RESULT), join("\n", (
     'OUTER BEFORE',
-    'OUTER BEFORE_EACH',
-        'test p',
-    'OUTER AFTER_EACH',
+        'OUTER BEFORE_EACH',
+            'test p',
+        'OUTER AFTER_EACH',
 
-    'OUTER BEFORE_EACH',
-        'BEFORE INNER',
-            'test y',
-        'AFTER INNER',
+        'BEFORE_ALL INNER',
+            'OUTER BEFORE_EACH',
+                'BEFORE_EACH INNER',
+                    'test y',
+                'AFTER_EACH INNER',
+            'OUTER AFTER_EACH',
 
-        'BEFORE INNER',
-            'test z',
-        'AFTER INNER',
-    'OUTER AFTER_EACH',
+            'OUTER BEFORE_EACH',
+                'BEFORE_EACH INNER',
+                    'test z',
+                'AFTER_EACH INNER',
+            'OUTER AFTER_EACH',
+        'AFTER_ALL INNER',
+    'OUTER AFTER',
 )));
 
 done_testing;
