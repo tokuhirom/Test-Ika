@@ -93,3 +93,5 @@ perltidy.ERR$
 \.bak$
 (\b|\A)\.gitignore
 ^inc/
+^others/
+^eg/.*\.spec$
