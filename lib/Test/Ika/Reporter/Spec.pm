@@ -76,4 +76,13 @@ sub finalize {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Test::Ika::Reporter::Spec - Reporter like RSpec
+
+=head1 DESCRIPTION
+
+This module displays pretty output like RSpec.
 

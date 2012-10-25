@@ -54,4 +54,5 @@ Test::Ika::Reporter::Test - testing tester
 
 This module captures testing result in Test::Ika.
 
+You can get a result from $test->result() method.
 
