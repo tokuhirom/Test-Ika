@@ -148,15 +148,59 @@ This module provides pretty output for testing.
 
 =back
 
+=head1 FUNCTIONS
+
+=over 4
+
+=item describe($name, $code)
+
+TBD
+
+=item context
+
+It's alias of 'describe' function.
+
+=item it($name, $code)
+
+TBD
+
+=item before_all(\&code)
+
+TBD
+
+=item before_each(\&code)
+
+TBD
+
+=item after_all(\&code)
+
+TBD
+
+=item after_each(\&code)
+
+TBD
+
+=back
+
 =head1 Why Ika?
 
 This module is dedicated to ikasam_a, a famous Japanese testing engineer.
+
+=head1 Why another one?
+
+This module focused to pretty output. Another modules doesn't provide this feature.
 
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
 
 =head1 SEE ALSO
+
+L<Test::Spec>
+
+L<Test::Behavior::Spec>
+
+L<Test::More::Behaviours>
 
 =head1 LICENSE
 
