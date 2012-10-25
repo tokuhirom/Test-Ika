@@ -142,6 +142,10 @@ This module is dedicated to ikasam_a, a famous Japanese testing engineer.
 
 This module focused to pretty output. Another modules doesn't provide this feature.
 
+=item Where is 'should'?
+
+I think the keyword 'should' is not a core feature of BDD.
+
 =back
 
 =item The spec mode(default)
