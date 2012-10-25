@@ -21,9 +21,12 @@ sub new {
 sub run {
     my $self = shift;
 
+    my $error;
+    my $ok;
+    my $output = "";
     try {
-        open my $fh, '>', \my $output;
-        my $ok = do {
+        open my $fh, '>', \$output;
+        $ok = do {
             no warnings 'redefine';
             my $builder = Test::Builder->create();
             local $Test::Builder::Test = $builder;
@@ -38,9 +41,10 @@ sub run {
             $builder->finalize();
             $builder->is_passing();
         };
-        $Test::Ika::REPORTER->it($self->{name}, !!$ok, $output);
     } catch {
-        $Test::Ika::REPORTER->exception($_);
+        $error = "$_";
+    } finally {
+        $Test::Ika::REPORTER->it($self->{name}, !!$ok, $output, $error);
     };
 }
 

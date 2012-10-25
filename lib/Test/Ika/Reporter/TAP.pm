@@ -2,7 +2,7 @@ package Test::Ika::Reporter::TAP;
 use strict;
 use warnings;
 use utf8;
-use Test::More ();
+use parent qw/Test::Builder::Module/;
 use Scope::Guard ();
 
 sub new {
@@ -24,15 +24,31 @@ sub exception {
     $name =~ s/\n\Z//;
 
     local $Test::Builder::Level = $Test::Builder::Level + 1;
-    my $builder = Test::More->builder;
+    my $builder = __PACKAGE__->builder;
     $builder->ok(0, "Error: $name");
 }
 
 sub it {
-    my ($self, $name, $test) = @_;
+    my ($self, $name, $test, $output, $error) = @_;
 
-    my $builder = Test::More->builder;
-    $builder->ok($test, '(' . join("/", @{$self->{describe}}) . ') ' . $name);
+    local $Test::Builder::Level = $Test::Builder::Level + 9;
+
+    my $builder = __PACKAGE__->builder;
+    {
+        $builder->ok($test, '(' . join("/", @{$self->{describe}}) . ') ' . $name);
+    }
+
+    if ($output) {
+        if ($test) {
+            $builder->note($output);
+        } else {
+            $builder->diag($output);
+        }
+    }
+
+    if ($error) {
+        $builder->diag("Error: $error");
+    }
 }
 
 sub finalize {
@@ -40,7 +56,7 @@ sub finalize {
     if ($self->{finalized}++) {
         Carp::croak("Do not finalize twice.");
     } else {
-        my $builder = Test::More->builder;
+        my $builder = __PACKAGE__->builder;
         $builder->done_testing;
     }
 }

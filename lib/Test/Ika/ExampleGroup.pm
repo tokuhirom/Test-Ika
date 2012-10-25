@@ -19,6 +19,7 @@ sub new {
         examples => [],
         name => $name,
         parent => $args{parent},
+        root => $args{root},
     }, $class;
 }
 
@@ -56,16 +57,20 @@ sub call_after_each_trigger {
 
 sub run {
     my ($self) = @_;
-    $self->call_trigger('before_all');
-    for my $stuff (@{$self->{examples}}) {
-        $self->call_before_each_trigger();
-        $stuff->run(); 
-        $self->call_after_each_trigger();
+
+    my $guard = $self->{root} ? undef : $Test::Ika::REPORTER->describe($self->{name});
+    {
+        $self->call_trigger('before_all');
+        for my $stuff (@{$self->{examples}}) {
+            $self->call_before_each_trigger();
+            $stuff->run(); 
+            $self->call_after_each_trigger();
+        }
+        for my $stuff (@{$self->{example_groups}}) {
+            $stuff->run(); 
+        }
+        $self->call_trigger('after_all');
     }
-    for my $stuff (@{$self->{example_groups}}) {
-        $stuff->run(); 
-    }
-    $self->call_trigger('after_all');
 }
 
 1;

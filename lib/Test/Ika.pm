@@ -20,7 +20,7 @@ our @EXPORT = (qw(
 
 
 our $FINISHED;
-our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root');
+our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root', root => 1);
 
 our $REPORTER = do {
     my $module = $ENV{TEST_MAX_REPORTER};

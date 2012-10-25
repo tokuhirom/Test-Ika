@@ -32,13 +32,8 @@ sub describe {
     });
 }
 
-sub exception {
-    my ($self, $msg) = @_;
-    print STDERR ('  ' x (@{$self->{describe}}+1)) . colored(['red', 'bold'], 'Exception: ') . colored(['red'], $msg);
-}
-
 sub it {
-    my ($self, $name, $test, $results) = @_;
+    my ($self, $name, $test, $results, $exception) = @_;
 
     print ('  ' x (@{$self->{describe}}+1));
     if ($test) {
@@ -52,7 +47,7 @@ sub it {
     if (!$test) {
         my $failed = ++$self->{failed};
         printf(" (FAILED - %d)", $failed);
-        push @{$self->{results}}, $results;
+        push @{$self->{results}}, [$results, $exception];
     }
     print("\n");
 }
@@ -67,11 +62,16 @@ sub finalize {
         for my $i (0..$self->{failed}-1) {
             printf "  %s)\n", $i+1;
             my $indent = ' ' x 4;
-            for my $msg ($self->{results}->[$i]) {
+            if (defined(my $msg = $self->{results}->[$i]->[0])) {
                 $msg =~ s{\n(?!\z)}{\n$indent}sg;
                 print $indent . $msg;
             }
+            if (defined(my $err = $self->{results}->[$i]->[1])) {
+                $err =~ s{\n(?!\z)}{\n$indent}sg;
+                print $indent . colored(['red', 'bold'], 'Exception: ') . colored(['red'], $err);
+            }
         }
+        print "\n";
     }
 }
 
