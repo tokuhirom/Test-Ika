@@ -4,7 +4,6 @@ use warnings;
 use 5.010001;
 our $VERSION = '0.01';
 
-use Try::Tiny;
 use Module::Load;
 use Test::Name::FromLine;
 
@@ -28,7 +27,7 @@ our $REPORTER = do {
     unless ($module) {
         $module = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
-    $module = $module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module";
+    $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
     Module::Load::load($module);
     $module->new();
 };
