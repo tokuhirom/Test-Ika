@@ -128,8 +128,6 @@ This module provides pretty output for testing.
 
 B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
-=over 4
-
 =head1 FAQ
 
 =over 4
@@ -147,6 +145,12 @@ This module focused to pretty output. Another modules doesn't provide this featu
 I think the keyword 'should' is not a core feature of BDD.
 
 =back
+
+=head1 Reporters
+
+Test::Ika provides some reporters.
+
+=over 4
 
 =item The spec mode(default)
 
