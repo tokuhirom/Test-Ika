@@ -94,7 +94,7 @@ __END__
 
 =head1 NAME
 
-Test::Ika - B!D!D! B!D!D!
+Test::Ika - Yet another BDD testing library(Development Release)
 
 =head1 SYNOPSIS
 
@@ -126,7 +126,23 @@ Test::Ika is yet another BDD framework for Perl5.
 
 This module provides pretty output for testing.
 
+B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
+
 =over 4
+
+=head1 FAQ
+
+=over 4
+
+=item Ika?
+
+This module is dedicated to ikasam_a, a famous Japanese testing engineer.
+
+=item Why another one?
+
+This module focused to pretty output. Another modules doesn't provide this feature.
+
+=back
 
 =item The spec mode(default)
 
@@ -154,7 +170,7 @@ This module provides pretty output for testing.
 
 =item describe($name, $code)
 
-TBD
+Create new L<Test::Ika::ExampleGroup>.
 
 =item context
 
@@ -162,23 +178,23 @@ It's alias of 'describe' function.
 
 =item it($name, $code)
 
-TBD
+Create new L<Test::Ika::Example>.
 
 =item before_all(\&code)
 
-TBD
+Register hook.
 
 =item before_each(\&code)
 
-TBD
+Register hook.
 
 =item after_all(\&code)
 
-TBD
+Register hook.
 
 =item after_each(\&code)
 
-TBD
+Register hook.
 
 =item runtests()
 
@@ -187,14 +203,6 @@ Do run test cases immediately.
 Normally, you don't call this method expressly. Test::Ika runs test cases on END { } phase.
 
 =back
-
-=head1 Why Ika?
-
-This module is dedicated to ikasam_a, a famous Japanese testing engineer.
-
-=head1 Why another one?
-
-This module focused to pretty output. Another modules doesn't provide this feature.
 
 =head1 AUTHOR
 
