@@ -16,3 +16,5 @@ MYMETA.*
 META.json
 META.yml
 README
+^inc/
+Test-Ika-*/
