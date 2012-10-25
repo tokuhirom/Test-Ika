@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use Test::Ika;
 use Test::Ika::Reporter::Test;
+use Data::Dumper;
 
 my $reporter = Test::Ika::Reporter::Test->new();
 $Test::Ika::REPORTER = $reporter;
@@ -26,13 +27,13 @@ $Test::Ika::REPORTER = $reporter;
     };
     runtests;
 }
-is(0+@{$reporter->report}, 3);
-is($reporter->report->[0]->[0], 'it');
-is($reporter->report->[1]->[0], 'it');
-is($reporter->report->[2]->[0], 'exception');
+subtest 'check result' => sub {
+    is(0+@{$reporter->report}, 3);
+    is($reporter->report->[0]->[0], 'it');
+    is($reporter->report->[1]->[0], 'it');
+    is($reporter->report->[2]->[0], 'it');
+} or diag(Dumper($reporter->report));
 
-use Data::Dumper;
-note(Dumper($reporter->report));
 
 done_testing;
 
