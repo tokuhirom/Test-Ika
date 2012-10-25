@@ -1,4 +1,4 @@
-package Test::Ika::Context;
+package Test::Ika::ExampleGroup;
 use strict;
 use warnings;
 use utf8;
@@ -15,8 +15,8 @@ sub new {
             after_all => [],
             after_each => [],
         },
-        contexts => [],
-        its => [],
+        example_groups => [],
+        examples => [],
         name => $name,
         parent => $args{parent},
     }, $class;
@@ -24,12 +24,12 @@ sub new {
 
 sub push_context {
     my ($self, $context) = @_;
-    push @{$self->{contexts}}, $context;
+    push @{$self->{example_groups}}, $context;
 }
 
-sub push_it {
+sub push_example {
     my ($self, $it) = @_;
-    push @{$self->{its}}, $it;
+    push @{$self->{examples}}, $it;
 }
 
 sub add_trigger {
@@ -57,12 +57,12 @@ sub call_after_each_trigger {
 sub run {
     my ($self) = @_;
     $self->call_trigger('before_all');
-    for my $stuff (@{$self->{its}}) {
+    for my $stuff (@{$self->{examples}}) {
         $self->call_before_each_trigger();
         $stuff->run(); 
         $self->call_after_each_trigger();
     }
-    for my $stuff (@{$self->{contexts}}) {
+    for my $stuff (@{$self->{example_groups}}) {
         $stuff->run(); 
     }
     $self->call_trigger('after_all');

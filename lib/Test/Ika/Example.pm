@@ -1,4 +1,4 @@
-package Test::Ika::It;
+package Test::Ika::Example;
 use strict;
 use warnings;
 use utf8;

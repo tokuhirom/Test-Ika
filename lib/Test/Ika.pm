@@ -7,8 +7,8 @@ our $VERSION = '0.01';
 use Module::Load;
 use Test::Name::FromLine;
 
-use Test::Ika::Context;
-use Test::Ika::It;
+use Test::Ika::ExampleGroup;
+use Test::Ika::Example;
 
 use parent qw/Exporter/;
 
@@ -20,7 +20,7 @@ our @EXPORT = (qw(
 
 
 our $FINISHED;
-our $ROOT = our $CURRENT = Test::Ika::Context->new(name => 'root');
+our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root');
 
 our $REPORTER = do {
     my $module = $ENV{TEST_MAX_REPORTER};
@@ -36,7 +36,7 @@ sub describe {
     my ($name, $code) = @_;
 
     my $current = $CURRENT;
-    my $context = Test::Ika::Context->new(
+    my $context = Test::Ika::ExampleGroup->new(
         name   => $name,
         parent => $current,
     );
@@ -50,8 +50,8 @@ sub describe {
 
 sub it {
     my ($name, $code) = @_;
-    my $it = Test::Ika::It->new(name => $name, code => $code);
-    $CURRENT->push_it($it);
+    my $it = Test::Ika::Example->new(name => $name, code => $code);
+    $CURRENT->push_example($it);
 }
 
 sub before_all(&) {
