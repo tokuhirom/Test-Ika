@@ -50,6 +50,10 @@ __END__
 
 Test::Ika::Reporter::Test - testing tester
 
+=head1 SYNOPSIS
+
+    Test::Ika->set_reporter('Test');
+
 =head1 DESCRIPTION
 
 This module captures testing result in Test::Ika.

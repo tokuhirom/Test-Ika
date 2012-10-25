@@ -22,15 +22,28 @@ our @EXPORT = (qw(
 our $FINISHED;
 our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root', root => 1);
 
-our $REPORTER = do {
+our $REPORTER;
+{
     my $module = $ENV{TEST_MAX_REPORTER};
     unless ($module) {
         $module = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
+    __PACKAGE__->set_reporter($module);
+}
+
+sub reporter { $REPORTER }
+
+sub set_reporter {
+    my ($class, $module) = @_;
+    $REPORTER = $class->load_reporter($module);
+}
+
+sub load_reporter {
+    my ($class, $module) = @_;
     $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
     Module::Load::load($module);
-    $module->new();
-};
+    return $module->new();
+}
 
 sub describe {
     my ($name, $code) = @_;
@@ -209,6 +222,20 @@ Register hook.
 Do run test cases immediately.
 
 Normally, you don't call this method expressly. Test::Ika runs test cases on END { } phase.
+
+=back
+
+=head1 CLASS METHODS
+
+=over 4
+
+=item Test::Ika->reporter()
+
+Get a reporter instance.
+
+=item Test::Ika->set_reporter($module)
+
+Load a reporter class.
 
 =back
 
