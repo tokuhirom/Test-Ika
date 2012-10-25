@@ -180,6 +180,12 @@ TBD
 
 TBD
 
+=item runtests()
+
+Do run test cases immediately.
+
+Normally, you don't call this method expressly. Test::Ika runs test cases on END { } phase.
+
 =back
 
 =head1 Why Ika?
