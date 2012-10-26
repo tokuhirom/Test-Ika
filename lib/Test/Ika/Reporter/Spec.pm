@@ -82,7 +82,15 @@ __END__
 
 Test::Ika::Reporter::Spec - Reporter like RSpec
 
+=head1 SYNOPSIS
+
+    Test::Ika->set_reporter('Spec');
+
 =head1 DESCRIPTION
 
 This module displays pretty output like RSpec.
+
+=head1 SEE ALSO
+
+L<Test::Ika>
 

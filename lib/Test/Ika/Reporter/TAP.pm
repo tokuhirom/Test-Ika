@@ -68,7 +68,15 @@ __END__
 
 Test::Ika::Reporter::TAP - TAP
 
+=head1 SYNOPSIS
+
+    Test::Ika->set_reporter('TAP');
+
 =head1 DESCRIPTION
 
 This reporter displays a testing result as TAP(Test Anything Protocol).
+
+=head1 SEE ALSO
+
+L<Test::Ika>
 
