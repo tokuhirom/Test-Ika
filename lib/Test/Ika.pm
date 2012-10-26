@@ -57,14 +57,14 @@ sub describe {
         local $CURRENT = $context;
         $code->();
     }
-    $current->push_context($context);
+    $current->add_example_group($context);
 }
 *context = *describe;
 
 sub it {
     my ($name, $code) = @_;
     my $it = Test::Ika::Example->new(name => $name, code => $code);
-    $CURRENT->push_example($it);
+    $CURRENT->add_example($it);
 }
 
 sub before_all(&) {

@@ -23,12 +23,12 @@ sub new {
     }, $class;
 }
 
-sub push_context {
+sub add_example_group {
     my ($self, $context) = @_;
     push @{$self->{example_groups}}, $context;
 }
 
-sub push_example {
+sub add_example {
     my ($self, $it) = @_;
     push @{$self->{examples}}, $it;
 }
