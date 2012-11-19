@@ -3,6 +3,7 @@ Build.PL
 Changes
 eg/messagefilter.t
 eg/oops.t
+eg/sasata299.pl
 eg/setup-teardown.pl
 eg/spec.t
 img/spec.png

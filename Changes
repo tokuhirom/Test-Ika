@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::Ika
 
+0.01
+
+    - first alpha release
+
 0.00_02
 
     - Better API, Better Docs.
