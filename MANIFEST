@@ -26,6 +26,9 @@ t/01_reporters.t
 t/02_hooks.t
 t/03_Reporter-Test.t
 t/04_hooks2.t
+t/05_suite_hooks.t
+t/06_suite_hooks_at_last.t
+t/07_suite_hooks_inner_describe.t
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t

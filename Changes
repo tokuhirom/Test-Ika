@@ -1,5 +1,10 @@
 Revision history for Perl extension Test::Ika
 
+0.02
+
+    - implements before_suite and after_suite
+      (ikasam_a)
+
 0.01
 
     - first alpha release
