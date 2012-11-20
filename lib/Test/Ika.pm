@@ -14,6 +14,7 @@ use parent qw/Exporter/;
 
 our @EXPORT = (qw(
     describe it context
+    before_suite after_suite
     before_all after_all before_each after_each
     runtests
 ));
@@ -65,6 +66,16 @@ sub it {
     my ($name, $code) = @_;
     my $it = Test::Ika::Example->new(name => $name, code => $code);
     $CURRENT->add_example($it);
+}
+
+sub before_suite(&) {
+    my $code = shift;
+    $ROOT->add_trigger(before_all => $code);
+}
+
+sub after_suite(&) {
+    my $code = shift;
+    $ROOT->add_trigger(after_all => $code);
 }
 
 sub before_all(&) {
@@ -201,11 +212,19 @@ It's alias of 'describe' function.
 
 Create new L<Test::Ika::Example>.
 
+=item before_suite(\&code)
+
+Register hook.
+
 =item before_all(\&code)
 
 Register hook.
 
 =item before_each(\&code)
+
+Register hook.
+
+=item after_suite(\&code)
 
 Register hook.
 
