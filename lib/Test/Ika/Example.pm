@@ -57,7 +57,10 @@ sub run {
         if ($self->{skip}) {
             $name .= $self->{code} ? ' [DISABLED]' : ' [NOT IMPLEMENTED]';
         }
-        $Test::Ika::REPORTER->it($name, !!$ok, $output, $error);
+
+        my $test = $self->{skip} ? -1 : !!$ok;
+
+        $Test::Ika::REPORTER->it($name, $test, $output, $error);
     };
 }
 
