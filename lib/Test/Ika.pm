@@ -219,6 +219,10 @@ It's alias of 'describe' function.
 
 Create new L<Test::Ika::Example>.
 
+=item xit($name, $code)
+
+Create new L<Test::Ika::Example> which marked "disabled".
+
 =item before_suite(\&code)
 
 Register hook.
