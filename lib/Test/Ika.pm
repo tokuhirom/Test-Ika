@@ -14,6 +14,7 @@ use parent qw/Exporter/;
 
 our @EXPORT = (qw(
     describe it context
+    xit
     before_suite after_suite
     before_all after_all before_each after_each
     runtests
@@ -65,6 +66,12 @@ sub describe {
 sub it {
     my ($name, $code) = @_;
     my $it = Test::Ika::Example->new(name => $name, code => $code);
+    $CURRENT->add_example($it);
+}
+
+sub xit {
+    my ($name, $code) = @_;
+    my $it = Test::Ika::Example->new(name => $name, code => $code, skip => 1);
     $CURRENT->add_example($it);
 }
 
