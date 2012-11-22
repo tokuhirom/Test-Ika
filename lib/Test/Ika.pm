@@ -64,14 +64,16 @@ sub describe {
 *context = *describe;
 
 sub it {
-    my ($name, $code) = @_;
-    my $it = Test::Ika::Example->new(name => $name, code => $code);
+    my $code = ref $_[-1] eq 'CODE' ? pop : undef;
+    my ($name, $tags) = @_;
+    my $it = Test::Ika::Example->new(name => $name, code => $code, tags => $tags);
     $CURRENT->add_example($it);
 }
 
 sub xit {
-    my ($name, $code) = @_;
-    my $it = Test::Ika::Example->new(name => $name, code => $code, skip => 1);
+    my $code = ref $_[-1] eq 'CODE' ? pop : undef;
+    my ($name, $tags) = @_;
+    my $it = Test::Ika::Example->new(name => $name, code => $code, tags => $tags, skip => 1);
     $CURRENT->add_example($it);
 }
 
@@ -218,6 +220,13 @@ It's alias of 'describe' function.
 =item it($name, $code)
 
 Create new L<Test::Ika::Example>.
+
+=item it($name, \%tags, $code)
+
+Create new L<Test::Ika::Example> with tags.
+
+Tags is a HASH reference.
+It's compared to C<%ENV> at runtime, and run example if they match.
 
 =item xit($name, $code)
 

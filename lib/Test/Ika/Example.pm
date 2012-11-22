@@ -14,11 +14,13 @@ sub new {
     my $name = delete $args{name} || Carp::croak "Missing name";
     my $code = delete $args{code}; # allow specification only
     my $skip = exists $args{skip} ? delete $args{skip} : (!$code ? 1 : 0); # xit
+    my $tags = delete $args{tags};
 
     bless {
         name => $name,
         code => $code,
         skip => $skip,
+        tags => $tags,
     }, $class;
 }
 
@@ -28,6 +30,21 @@ sub run {
     my $error;
     my $ok;
     my $output = "";
+
+    if (defined $self->{tags} && defined $self->{code}) {
+        my @keys = keys %{$self->{tags}};
+
+        my $match = 0;
+        for my $key (@keys) {
+            next unless exists $ENV{$key};
+
+            my $value = $self->{tags}->{$key};
+            $match++ if (ref $value eq 'Regexp' ? ($ENV{$key} =~ $value) : ($ENV{$key} eq $value));
+        }
+
+        $self->{skip}++ if $match != @keys;
+    };
+
     try {
         open my $fh, '>', \$output;
         $ok = do {
