@@ -36,8 +36,11 @@ sub it {
     my ($self, $name, $test, $results, $exception) = @_;
 
     print ('  ' x (@{$self->{describe}}+1));
-    if ($test) {
+    if ($test > 0) {
         print( colored( ['green'], "\x{2713} " ) );
+    }
+    elsif ($test < 0) {
+        print( colored( ['yellow'], "\x{2713} " ) );
     }
     else {
         # not ok

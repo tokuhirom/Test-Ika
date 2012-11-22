@@ -10,11 +10,15 @@ use Test::Builder;
 sub new {
     my $class = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
+
     my $name = delete $args{name} || Carp::croak "Missing name";
-    my $code = delete $args{code} || Carp::croak "Missing code";
+    my $code = delete $args{code}; # allow specification only
+    my $skip = exists $args{skip} ? delete $args{skip} : (!$code ? 1 : 0); # xit
+
     bless {
         name => $name,
         code => $code,
+        skip => $skip,
     }, $class;
 }
 
@@ -36,7 +40,12 @@ sub run {
             $builder->failure_output($fh);
             $builder->todo_output($fh);
 
+            if ($self->{skip}) {
+                $builder->skip;
+            }
+            else {
                 $self->{code}->();
+            }
 
             $builder->finalize();
             $builder->is_passing();
@@ -44,7 +53,14 @@ sub run {
     } catch {
         $error = "$_";
     } finally {
-        $Test::Ika::REPORTER->it($self->{name}, !!$ok, $output, $error);
+        my $name = $self->{name};
+        if ($self->{skip}) {
+            $name .= $self->{code} ? ' [DISABLED]' : ' [NOT IMPLEMENTED]';
+        }
+
+        my $test = $self->{skip} ? -1 : !!$ok;
+
+        $Test::Ika::REPORTER->it($name, $test, $output, $error);
     };
 }
 
