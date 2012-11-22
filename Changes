@@ -1,5 +1,10 @@
 Revision history for Perl extension Test::Ika
 
+0.03
+
+    - implements "xit" and "it SPECIFICATION" only pattern
+      (ikasam_a)
+
 0.02
 
     - implements before_suite and after_suite
