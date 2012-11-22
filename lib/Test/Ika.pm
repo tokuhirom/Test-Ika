@@ -221,6 +221,13 @@ It's alias of 'describe' function.
 
 Create new L<Test::Ika::Example>.
 
+=item it($name, \%tags, $code)
+
+Create new L<Test::Ika::Example> with tags.
+
+Tags is a HASH reference.
+It's compared to C<%ENV> at runtime, and run example if they match.
+
 =item xit($name, $code)
 
 Create new L<Test::Ika::Example> which marked "disabled".
