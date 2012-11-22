@@ -33,8 +33,16 @@ sub run {
 
     if (defined $self->{tags} && defined $self->{code}) {
         my @keys = keys %{$self->{tags}};
-        my $match = scalar(grep { exists $ENV{$_} && $ENV{$_} eq $self->{tags}->{$_} } @keys) || 0;
-        $self->{skip}++ if @keys > 0 && $match != @keys;
+
+        my $match = 0;
+        for my $key (@keys) {
+            next unless exists $ENV{$key};
+
+            my $value = $self->{tags}->{$key};
+            $match++ if (ref $value eq 'Regexp' ? ($ENV{$key} =~ $value) : ($ENV{$key} eq $value));
+        }
+
+        $self->{skip}++ if $match != @keys;
     };
 
     try {
