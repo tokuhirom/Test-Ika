@@ -13,11 +13,14 @@ sub new {
 
     my $name = delete $args{name} || Carp::croak "Missing name";
     my $code = delete $args{code}; # allow specification only
+
+    my $cond = exists $args{cond} ? delete $args{cond} : sub { 1 };
     my $skip = exists $args{skip} ? delete $args{skip} : (!$code ? 1 : 0); # xit
 
     bless {
         name => $name,
         code => $code,
+        cond => $cond,
         skip => $skip,
     }, $class;
 }
@@ -28,6 +31,13 @@ sub run {
     my $error;
     my $ok;
     my $output = "";
+
+    if (defined $self->{cond} && defined $self->{code}) {
+        my $cond = ref $self->{cond} eq 'CODE' ? $self->{cond}->() : $self->{cond};
+        $cond = !!$cond;
+        $self->{skip}++ unless $cond;
+    }
+
     try {
         open my $fh, '>', \$output;
         $ok = do {
