@@ -15,6 +15,7 @@ use parent qw/Exporter/;
 our @EXPORT = (qw(
     describe it context
     xit
+    when
     before_suite after_suite
     before_all after_all before_each after_each
     runtests
@@ -63,15 +64,21 @@ sub describe {
 }
 *context = *describe;
 
+sub when (&) {
+    return $_[0];
+}
+
 sub it {
-    my ($name, $code) = @_;
-    my $it = Test::Ika::Example->new(name => $name, code => $code);
+    my $code = ref $_[-1] eq 'CODE' ? pop : undef;
+    my ($name, $cond) = @_;
+    my $it = Test::Ika::Example->new(name => $name, code => $code, cond => $cond);
     $CURRENT->add_example($it);
 }
 
 sub xit {
-    my ($name, $code) = @_;
-    my $it = Test::Ika::Example->new(name => $name, code => $code, skip => 1);
+    my $code = ref $_[-1] eq 'CODE' ? pop : undef;
+    my ($name, $cond) = @_;
+    my $it = Test::Ika::Example->new(name => $name, code => $code, cond => $cond, skip => 1);
     $CURRENT->add_example($it);
 }
 
@@ -215,11 +222,30 @@ Create new L<Test::Ika::ExampleGroup>.
 
 It's alias of 'describe' function.
 
-=item it($name, $code)
+=item it($name, \&code)
 
 Create new L<Test::Ika::Example>.
 
-=item xit($name, $code)
+=item it($name, $cond, \&code)
+
+Create new conditional L<Test::Ika::Example>.
+
+C<$cond> is usually a sub-routine reference.
+You can set it with C<when> statement.
+
+  # run this example, when "sub { $ENV{TEST_MESSAGE} }" returns true
+  it 'should detect message', when { $ENV{TEST_MESSAGE} } => sub {
+      my $filter = MessageFilter->new('foo');
+      expect($filter->detect('hello foo'))->ok;
+  };
+
+=item when(\&code)
+
+Set conditional sub-routine for it/xit.
+
+=item xit($name, \&code)
+
+=item xit($name, $cond, \&code)
 
 Create new L<Test::Ika::Example> which marked "disabled".
 
