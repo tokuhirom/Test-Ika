@@ -231,17 +231,27 @@ Create new L<Test::Ika::Example>.
 Create new conditional L<Test::Ika::Example>.
 
 C<$cond> is usually a sub-routine reference.
-You can set it with C<when> statement.
+You can set it with "when" statement.
 
-  # run this example, when "sub { $ENV{TEST_MESSAGE} }" returns true
-  it 'should detect message', when { $ENV{TEST_MESSAGE} } => sub {
+  # run this example, if C<$ENV{TEST_MESSAGE}> returns true
+
+  my $cond = sub { $ENV{TEST_MESSAGE} };
+
+  it 'should detect message', $cond => sub {
       my $filter = MessageFilter->new('foo');
       expect($filter->detect('hello foo'))->ok;
   };
 
 =item when(\&code)
 
-Set conditional sub-routine for it/xit.
+Specify conditional sub-routine.
+
+You can write conditional example as shown below:
+
+  it 'should detect message', when { $ENV{TEST_MESSAGE} } => sub {
+      my $filter = MessageFilter->new('foo');
+      expect($filter->detect('hello foo'))->ok;
+  };
 
 =item xit($name, \&code)
 
