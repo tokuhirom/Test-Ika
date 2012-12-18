@@ -1,5 +1,11 @@
 Revision history for Perl extension Test::Ika
 
+
+0.04
+
+    - conditional example (can use "when" statement)
+      (ikasam_a)
+
 0.03
 
     - implements "xit" and "it SPECIFICATION" only pattern

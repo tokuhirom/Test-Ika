@@ -30,6 +30,7 @@ t/05_suite_hooks.t
 t/06_suite_hooks_at_last.t
 t/07_suite_hooks_inner_describe.t
 t/08_xit.t
+t/09_conditional.t
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t
