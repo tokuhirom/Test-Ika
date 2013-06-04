@@ -45,7 +45,10 @@
             "Exporter" : "0",
             "Module::Load" : "0",
             "Scope::Guard" : "0",
+            "Term::ANSIColor" : "0",
             "Term::Encoding" : "0",
+            "Test::Builder" : "0",
+            "Test::Builder::Module" : "0",
             "Test::More" : "0.98",
             "Test::Name::FromLine" : "0.06",
             "Try::Tiny" : "0",
@@ -75,6 +78,6 @@
    "version" : "0.04",
    "x_contributors" : [
       "ikasam_a <masaki.nakagawa@gmail.com>",
-      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
+      "tokuhirom <tokuhirom@gmail.com>"
    ]
 }
