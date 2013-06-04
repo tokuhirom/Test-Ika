@@ -13,8 +13,8 @@ use Test::Ika::Example;
 use parent qw/Exporter/;
 
 our @EXPORT = (qw(
-    describe it context
-    xit
+    describe context it
+    xdescribe xcontext xit
     when
     before_suite after_suite
     before_all after_all before_each after_each
@@ -81,6 +81,24 @@ sub xit {
     my $it = Test::Ika::Example->new(name => $name, code => $code, cond => $cond, skip => 1);
     $CURRENT->add_example($it);
 }
+
+sub xdescribe {
+    my $caller = caller(0);
+
+    no strict 'refs';
+    no warnings 'redefine';
+
+    local *{"${caller}::it"} = \&xit;
+
+    my $noop = sub {};
+    local *{"${caller}::before_all"}  = $noop;
+    local *{"${caller}::after_all"}   = $noop;
+    local *{"${caller}::before_each"} = $noop;
+    local *{"${caller}::after_each"}  = $noop;
+
+    describe(@_);
+}
+*xcontext = \&xdescribe;
 
 sub before_suite(&) {
     my $code = shift;
