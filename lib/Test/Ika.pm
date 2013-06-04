@@ -285,7 +285,7 @@ Register hook.
 
 Register hook.
 
-=item C<< before_each(\&code)
+=item C<< before_each(\&code) >>
 
 Register hook.
 

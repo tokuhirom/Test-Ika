@@ -64,7 +64,7 @@ Test::Ika provides some reporters.
 
 # FUNCTIONS
 
-- describe($name, $code)
+- `describe($name, $code)`
 
     Create new [Test::Ika::ExampleGroup](http://search.cpan.org/perldoc?Test::Ika::ExampleGroup).
 
@@ -72,11 +72,11 @@ Test::Ika provides some reporters.
 
     It's alias of 'describe' function.
 
-- it($name, \\&code)
+- `it($name, \&code)`
 
     Create new [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example).
 
-- it($name, $cond, \\&code)
+- `it($name, $cond, \&code)`
 
     Create new conditional [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example).
 
@@ -92,7 +92,7 @@ Test::Ika provides some reporters.
             expect($filter->detect('hello foo'))->ok;
         };
 
-- when(\\&code)
+- `when(\&code)`
 
     Specify conditional sub-routine.
 
@@ -103,36 +103,36 @@ Test::Ika provides some reporters.
             expect($filter->detect('hello foo'))->ok;
         };
 
-- xit($name, \\&code)
-- xit($name, $cond, \\&code)
+- `xit($name, \&code)`
+- `xit($name, $cond, \&code)`
 
     Create new [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example) which marked "disabled".
 
-- before\_suite(\\&code)
+- `before_suite(\&code)`
 
     Register hook.
 
-- before\_all(\\&code)
+- `before_all(\&code)`
 
     Register hook.
 
-- before\_each(\\&code)
+- `before_each(\&code)`
 
     Register hook.
 
-- after\_suite(\\&code)
+- `after_suite(\&code)`
 
     Register hook.
 
-- after\_all(\\&code)
+- `after_all(\&code)`
 
     Register hook.
 
-- after\_each(\\&code)
+- `after_each(\&code)`
 
     Register hook.
 
-- runtests()
+- `runtests()`
 
     Do run test cases immediately.
 
@@ -140,11 +140,11 @@ Test::Ika provides some reporters.
 
 # CLASS METHODS
 
-- Test::Ika->reporter()
+- `Test::Ika->reporter()`
 
     Get a reporter instance.
 
-- Test::Ika->set\_reporter($module)
+- `Test::Ika->set_reporter($module)`
 
     Load a reporter class.
 
