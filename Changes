@@ -2,6 +2,10 @@ Revision history for Perl extension Test::Ika
 
 {{$NEXT}}
 
+0.05 2013-06-04T14:53:36Z
+
+    - impl xdescribe and xcontext (skip all cases under there)
+      (ikasam_a)
 
 0.04
 

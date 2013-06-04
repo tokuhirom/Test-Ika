@@ -2,7 +2,7 @@ package Test::Ika;
 use strict;
 use warnings;
 use 5.010001;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Module::Load;
 use Test::Name::FromLine;

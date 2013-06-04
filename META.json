@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.3, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.4.6, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
@@ -75,7 +75,7 @@
          "web" : "https://github.com/tokuhirom/Test-Ika"
       }
    },
-   "version" : "0.04",
+   "version" : "0.05",
    "x_contributors" : [
       "ikasam_a <masaki.nakagawa@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
