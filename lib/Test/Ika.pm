@@ -232,7 +232,7 @@ Test::Ika provides some reporters.
 
 =over 4
 
-=item describe($name, $code)
+=item C<< describe($name, $code) >>
 
 Create new L<Test::Ika::ExampleGroup>.
 
@@ -240,11 +240,11 @@ Create new L<Test::Ika::ExampleGroup>.
 
 It's alias of 'describe' function.
 
-=item it($name, \&code)
+=item C<< it($name, \&code) >>
 
 Create new L<Test::Ika::Example>.
 
-=item it($name, $cond, \&code)
+=item C<< it($name, $cond, \&code) >>
 
 Create new conditional L<Test::Ika::Example>.
 
@@ -260,7 +260,7 @@ You can set it with "when" statement.
       expect($filter->detect('hello foo'))->ok;
   };
 
-=item when(\&code)
+=item C<< when(\&code) >>
 
 Specify conditional sub-routine.
 
@@ -271,37 +271,37 @@ You can write conditional example as shown below:
       expect($filter->detect('hello foo'))->ok;
   };
 
-=item xit($name, \&code)
+=item C<< xit($name, \&code) >>
 
-=item xit($name, $cond, \&code)
+=item C<< xit($name, $cond, \&code) >>
 
 Create new L<Test::Ika::Example> which marked "disabled".
 
-=item before_suite(\&code)
+=item C<< before_suite(\&code) >>
 
 Register hook.
 
-=item before_all(\&code)
+=item C<< before_all(\&code) >>
 
 Register hook.
 
-=item before_each(\&code)
+=item C<< before_each(\&code)
 
 Register hook.
 
-=item after_suite(\&code)
+=item C<< after_suite(\&code) >>
 
 Register hook.
 
-=item after_all(\&code)
+=item C<< after_all(\&code) >>
 
 Register hook.
 
-=item after_each(\&code)
+=item C<< after_each(\&code) >>
 
 Register hook.
 
-=item runtests()
+=item C<< runtests() >>
 
 Do run test cases immediately.
 
@@ -313,11 +313,11 @@ Normally, you don't call this method expressly. Test::Ika runs test cases on END
 
 =over 4
 
-=item Test::Ika->reporter()
+=item C<< Test::Ika->reporter() >>
 
 Get a reporter instance.
 
-=item Test::Ika->set_reporter($module)
+=item C<< Test::Ika->set_reporter($module) >>
 
 Load a reporter class.
 
