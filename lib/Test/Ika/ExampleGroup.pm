@@ -40,18 +40,24 @@ sub add_trigger {
 
 sub call_trigger {
     my ($self, $trigger_name) = @_;
-    $_->() for @{$self->{triggers}->{$trigger_name}};
+    for my $trigger (@{$self->{triggers}->{$trigger_name}}) {
+        $trigger->();
+    }
 }
 
 sub call_before_each_trigger {
     my ($self) = @_;
     $self->{parent}->call_before_each_trigger() if $self->{parent};
-    $_->() for @{$self->{triggers}->{'before_each'}};
+    for my $trigger (@{$self->{triggers}->{'before_each'}}) {
+        $trigger->();
+    }
 }
 
 sub call_after_each_trigger {
     my ($self) = @_;
-    $_->() for @{$self->{triggers}->{'after_each'}};
+    for my $trigger (@{$self->{triggers}->{'after_each'}}) {
+        $trigger->();
+    }
     $self->{parent}->call_after_each_trigger() if $self->{parent};
 }
 
