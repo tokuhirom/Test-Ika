@@ -49,12 +49,14 @@ sub load_reporter {
 }
 
 sub describe {
-    my ($name, $code) = @_;
+    my $code = ref $_[-1] eq 'CODE' ? pop : sub {};
+    my ($name, $cond) = @_;
 
     my $current = $CURRENT;
     my $context = Test::Ika::ExampleGroup->new(
         name   => $name,
         parent => $current,
+        cond   => $cond,
     );
     {
         local $CURRENT = $context;
