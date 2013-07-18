@@ -2,6 +2,13 @@ Revision history for Perl extension Test::Ika
 
 {{$NEXT}}
 
+0.06 2013-07-18T19:19:32Z
+
+    - conditional context and describe (can use "when" statement)
+      (ikasam_a)
+    - replace $_ to lexical value
+      (ikasam_a)
+
 0.05 2013-06-04T14:53:36Z
 
     - impl xdescribe and xcontext (skip all cases under there)
