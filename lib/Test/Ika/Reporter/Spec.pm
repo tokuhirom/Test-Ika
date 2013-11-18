@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Scope::Guard ();
-use Term::ANSIColor;
+use Term::ANSIColor qw/colored/;
 use Term::Encoding ();
 
 sub new {
