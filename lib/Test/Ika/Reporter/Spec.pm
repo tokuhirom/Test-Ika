@@ -3,11 +3,12 @@ use strict;
 use warnings;
 use utf8;
 use Scope::Guard ();
-use Term::ANSIColor qw/colored/;
+use Term::ANSIColor;
 use Term::Encoding ();
 
 sub new {
     my $class = shift;
+    my $args  = shift;
 
     $|++;
     my $term_encoding = Term::Encoding::term_encoding();
@@ -20,7 +21,15 @@ sub new {
         failed => 0,
         describe => [],
         results => [],
+        color => (exists $args->{color} ? $args->{color} : 1),
     }, $class;
+}
+
+sub to_output {
+    my ($self, @args) = @_;
+
+    return $args[1] unless $self->{color};
+    return Term::ANSIColor::colored(@args);
 }
 
 sub describe {
@@ -37,16 +46,16 @@ sub it {
 
     print ('  ' x (@{$self->{describe}}+1));
     if ($test > 0) {
-        print( colored( ['green'], "\x{2713} " ) );
+        print( $self->to_output( ['green'], "\x{2713} " ) );
     }
     elsif ($test < 0) {
-        print( colored( ['yellow'], "\x{2713} " ) );
+        print( $self->to_output( ['yellow'], "\x{2713} " ) );
     }
     else {
         # not ok
-        print( colored( ['red'], "\x{2716} " ) );
+        print( $self->to_output( ['red'], "\x{2716} " ) );
     }
-    print( colored( ["BRIGHT_BLACK"], $name ) );
+    print( $self->to_output( ["BRIGHT_BLACK"], $name ) );
     if (!$test) {
         my $failed = ++$self->{failed};
         printf(" (FAILED - %d)", $failed);
@@ -71,7 +80,7 @@ sub finalize {
             }
             if (defined(my $err = $self->{results}->[$i]->[1])) {
                 $err =~ s{\n(?!\z)}{\n$indent}sg;
-                print $indent . colored(['red', 'bold'], 'Exception: ') . colored(['red'], $err);
+                print $indent . $self->to_output(['red', 'bold'], 'Exception: ') . $self->to_output(['red'], $err);
             }
         }
         print "\n";

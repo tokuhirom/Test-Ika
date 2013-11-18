@@ -45,7 +45,13 @@ sub load_reporter {
     my ($class, $module) = @_;
     $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
     Module::Load::load($module);
-    return $module->new();
+
+    my $args = +{};
+    if ($module eq 'Test::Ika::Reporter::Spec' && $ENV{NOCOLOR}) {
+        $args->{color} = 0;
+    }
+
+    return $module->new($args);
 }
 
 sub describe {
