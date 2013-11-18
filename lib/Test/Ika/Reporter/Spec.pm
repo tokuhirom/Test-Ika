@@ -26,10 +26,10 @@ sub new {
 }
 
 sub to_output {
-    my ($self, @args) = @_;
+    my ($self, $color, @args) = @_;
 
-    return $args[1] unless $self->{color};
-    return Term::ANSIColor::colored(@args);
+    return @args unless $self->{color};
+    return Term::ANSIColor::colored($color, @args);
 }
 
 sub describe {
