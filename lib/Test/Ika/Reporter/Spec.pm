@@ -25,7 +25,7 @@ sub new {
     }, $class;
 }
 
-sub to_output {
+sub color {
     my ($self, $color, @args) = @_;
 
     return @args unless $self->{color};
@@ -46,16 +46,16 @@ sub it {
 
     print ('  ' x (@{$self->{describe}}+1));
     if ($test > 0) {
-        print( $self->to_output( ['green'], "\x{2713} " ) );
+        print( $self->color( ['green'], "\x{2713} " ) );
     }
     elsif ($test < 0) {
-        print( $self->to_output( ['yellow'], "\x{2713} " ) );
+        print( $self->color( ['yellow'], "\x{2713} " ) );
     }
     else {
         # not ok
-        print( $self->to_output( ['red'], "\x{2716} " ) );
+        print( $self->color( ['red'], "\x{2716} " ) );
     }
-    print( $self->to_output( ["BRIGHT_BLACK"], $name ) );
+    print( $self->color( ["BRIGHT_BLACK"], $name ) );
     if (!$test) {
         my $failed = ++$self->{failed};
         printf(" (FAILED - %d)", $failed);
@@ -80,7 +80,7 @@ sub finalize {
             }
             if (defined(my $err = $self->{results}->[$i]->[1])) {
                 $err =~ s{\n(?!\z)}{\n$indent}sg;
-                print $indent . $self->to_output(['red', 'bold'], 'Exception: ') . $self->to_output(['red'], $err);
+                print $indent . $self->color(['red', 'bold'], 'Exception: ') . $self->color(['red'], $err);
             }
         }
         print "\n";
