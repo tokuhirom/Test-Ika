@@ -36,6 +36,13 @@ our $REPORTER;
 
 sub reporter { $REPORTER }
 
+sub build_reporter_option {
+    my $class = shift;
+    return +{
+        color => ! $ENV{TEST_IKA_NOCOLOR},
+    };
+}
+
 sub set_reporter {
     my ($class, $module) = @_;
     $REPORTER = $class->load_reporter($module);
@@ -46,12 +53,7 @@ sub load_reporter {
     $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
     Module::Load::load($module);
 
-    my $args = +{};
-    if ($module eq 'Test::Ika::Reporter::Spec' && $ENV{NOCOLOR}) {
-        $args->{color} = 0;
-    }
-
-    return $module->new($args);
+    return $module->new(__PACKAGE__->build_reporter_option);
 }
 
 sub describe {
