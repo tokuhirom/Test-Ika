@@ -8,6 +8,7 @@ use Term::Encoding ();
 
 sub new {
     my $class = shift;
+    my $args  = shift;
 
     $|++;
     my $term_encoding = Term::Encoding::term_encoding();
@@ -20,7 +21,15 @@ sub new {
         failed => 0,
         describe => [],
         results => [],
+        color => (exists $args->{color} ? $args->{color} : 1),
     }, $class;
+}
+
+sub color {
+    my ($self, $color, @args) = @_;
+
+    return @args unless $self->{color};
+    return Term::ANSIColor::colored($color, @args);
 }
 
 sub describe {
@@ -37,16 +46,16 @@ sub it {
 
     print ('  ' x (@{$self->{describe}}+1));
     if ($test > 0) {
-        print( colored( ['green'], "\x{2713} " ) );
+        print( $self->color( ['green'], "\x{2713} " ) );
     }
     elsif ($test < 0) {
-        print( colored( ['yellow'], "\x{2713} " ) );
+        print( $self->color( ['yellow'], "\x{2713} " ) );
     }
     else {
         # not ok
-        print( colored( ['red'], "\x{2716} " ) );
+        print( $self->color( ['red'], "\x{2716} " ) );
     }
-    print( colored( ["BRIGHT_BLACK"], $name ) );
+    print( $self->color( ["BRIGHT_BLACK"], $name ) );
     if (!$test) {
         my $failed = ++$self->{failed};
         printf(" (FAILED - %d)", $failed);
@@ -71,7 +80,7 @@ sub finalize {
             }
             if (defined(my $err = $self->{results}->[$i]->[1])) {
                 $err =~ s{\n(?!\z)}{\n$indent}sg;
-                print $indent . colored(['red', 'bold'], 'Exception: ') . colored(['red'], $err);
+                print $indent . $self->color(['red', 'bold'], 'Exception: ') . $self->color(['red'], $err);
             }
         }
         print "\n";

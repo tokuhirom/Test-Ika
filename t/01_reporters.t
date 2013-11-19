@@ -21,5 +21,5 @@ sub check {
 sub functions {
     my $klass = shift;
     no strict 'refs';
-    sort grep { $_ ne 'colored' } grep { defined &{"${klass}::$_"} } keys %{"${klass}::"};
+    sort grep { $_ ne 'colored' && $_ ne 'color' } grep { defined &{"${klass}::$_"} } keys %{"${klass}::"};
 }
