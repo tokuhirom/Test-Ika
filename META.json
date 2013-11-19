@@ -75,9 +75,10 @@
          "web" : "https://github.com/tokuhirom/Test-Ika"
       }
    },
-   "version" : "0.06",
+   "version" : "0.07",
    "x_contributors" : [
       "ikasam_a <masaki.nakagawa@gmail.com>",
+      "Ryoichi SEKIGUCHI <ryopeko+free@gmail.com>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ]
 }
