@@ -47,19 +47,19 @@ sub call_trigger {
 }
 
 sub call_before_each_trigger {
-    my ($self) = @_;
-    $self->{parent}->call_before_each_trigger() if $self->{parent};
+    my ($self, @args) = @_;
+    $self->{parent}->call_before_each_trigger(@args) if $self->{parent};
     for my $trigger (@{$self->{triggers}->{'before_each'}}) {
-        $trigger->();
+        $trigger->(@args);
     }
 }
 
 sub call_after_each_trigger {
-    my ($self) = @_;
+    my ($self, @args) = @_;
     for my $trigger (@{$self->{triggers}->{'after_each'}}) {
-        $trigger->();
+        $trigger->(@args);
     }
-    $self->{parent}->call_after_each_trigger() if $self->{parent};
+    $self->{parent}->call_after_each_trigger(@args) if $self->{parent};
 }
 
 sub run {
@@ -78,9 +78,9 @@ sub run {
     unless ($self->{skip}) {
         $self->call_trigger('before_all');
         for my $stuff (@{$self->{examples}}) {
-            $self->call_before_each_trigger();
-            $stuff->run(); 
-            $self->call_after_each_trigger();
+            $self->call_before_each_trigger($stuff, $self);
+            $stuff->run();
+            $self->call_after_each_trigger($stuff, $self);
         }
         for my $stuff (@{$self->{example_groups}}) {
             $stuff->run(); 
