@@ -7,6 +7,14 @@ use Carp ();
 use Try::Tiny;
 use Test::Builder;
 
+{ # accessor
+    sub name   { $_[0]->{name} }
+    sub skip   { $_[0]->{skip} > 0 }
+    sub result { $_[0]->{result} }
+    sub output { $_[0]->{output} }
+    sub error  { $_[0]->{error} }
+}
+
 sub new {
     my $class = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
@@ -69,6 +77,10 @@ sub run {
         }
 
         my $test = $self->{skip} ? -1 : !!$ok;
+
+        $self->{result} = $test;
+        $self->{output} = $output;
+        $self->{error}  = $error;
 
         $Test::Ika::REPORTER->it($name, $test, $output, $error);
     };
