@@ -178,10 +178,6 @@ Test::Ika - Yet another BDD testing library(Development Release)
             my $filter = MessageFilter->new('foo');
             expect($filter->detect('hello foo'))->ok;
         };
-        it 'should detect message with NG word' => sub {
-            my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
-        };
     };
 
     runtests;
