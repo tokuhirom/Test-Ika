@@ -165,7 +165,6 @@ Test::Ika - Yet another BDD testing library(Development Release)
 =head1 SYNOPSIS
 
     use Test::Ika;
-    use Test::Expects;
 
     describe 'MessageFilter' => sub {
         my $filter;
@@ -174,9 +173,12 @@ Test::Ika - Yet another BDD testing library(Development Release)
             $filter = MessageFilter->new();
         };
 
-        it 'should detect message with NG word' => sub {
-            my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
+        it 'should detect message with profanity word' => sub {
+            ok $filter->detect('foo');
+        };
+
+        it 'should not detect message without profanity word' => sub {
+            ok ! $filter->detect('bar');
         };
     };
 
@@ -263,7 +265,7 @@ You can set it with "when" statement.
 
   it 'should detect message', $cond => sub {
       my $filter = MessageFilter->new('foo');
-      expect($filter->detect('hello foo'))->ok;
+      ok $filter->detect('hello foo');
   };
 
 =item C<< when(\&code) >>
@@ -274,7 +276,7 @@ You can write conditional example as shown below:
 
   it 'should detect message', when { $ENV{TEST_MESSAGE} } => sub {
       my $filter = MessageFilter->new('foo');
-      expect($filter->detect('hello foo'))->ok;
+      ok $filter->detect('hello foo');
   };
 
 =item C<< xit($name, \&code) >>
@@ -285,27 +287,41 @@ Create new L<Test::Ika::Example> which marked "disabled".
 
 =item C<< before_suite(\&code) >>
 
-Register hook.
+Register hook for before running suite.
 
 =item C<< before_all(\&code) >>
 
-Register hook.
+Register hook for before running example group.
 
 =item C<< before_each(\&code) >>
 
-Register hook.
+Register hook for before running each examples.
+
+This block can receive example and example group.
+
+  before_each {
+      my ($example, $group) = @_;
+      # ...
+  };
 
 =item C<< after_suite(\&code) >>
 
-Register hook.
+Register hook for after running suite.
 
 =item C<< after_all(\&code) >>
 
-Register hook.
+Register hook for after running example group.
 
 =item C<< after_each(\&code) >>
 
-Register hook.
+Register hook for after running each examples.
+
+This block can receive example and example group.
+
+  after_each {
+      my ($example, $group) = @_;
+      # ...
+  };
 
 =item C<< runtests() >>
 
