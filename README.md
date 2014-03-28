@@ -5,7 +5,6 @@ Test::Ika - Yet another BDD testing library(Development Release)
 # SYNOPSIS
 
     use Test::Ika;
-    use Test::Expects;
 
     describe 'MessageFilter' => sub {
         my $filter;
@@ -14,13 +13,12 @@ Test::Ika - Yet another BDD testing library(Development Release)
             $filter = MessageFilter->new();
         };
 
-        it 'should detect message with NG word' => sub {
-            my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
+        it 'should detect message with profanity word' => sub {
+            ok $filter->detect('foo');
         };
-        it 'should detect message with NG word' => sub {
-            my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
+
+        it 'should not detect message without profanity word' => sub {
+            ok ! $filter->detect('bar');
         };
     };
 
@@ -54,19 +52,23 @@ Test::Ika provides some reporters.
 
 - The spec mode(default)
 
-    <div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec.png"></div>
+    <div>
+            <div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec.png"></div>
 
-    <div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec2.png"></div>
+            <div><img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/spec2.png"></div>
+    </div>
 
 - TAP output(it's enabled under $ENV{HARNESS\_ACTIVE} is true)
 
-    <img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/tap.png">
+    <div>
+            <img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/tap.png">
+    </div>
 
 # FUNCTIONS
 
 - `describe($name, $code)`
 
-    Create new [Test::Ika::ExampleGroup](http://search.cpan.org/perldoc?Test::Ika::ExampleGroup).
+    Create new [Test::Ika::ExampleGroup](https://metacpan.org/pod/Test::Ika::ExampleGroup).
 
 - context
 
@@ -74,11 +76,11 @@ Test::Ika provides some reporters.
 
 - `it($name, \&code)`
 
-    Create new [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example).
+    Create new [Test::Ika::Example](https://metacpan.org/pod/Test::Ika::Example).
 
 - `it($name, $cond, \&code)`
 
-    Create new conditional [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example).
+    Create new conditional [Test::Ika::Example](https://metacpan.org/pod/Test::Ika::Example).
 
     `$cond` is usually a sub-routine reference.
     You can set it with "when" statement.
@@ -89,7 +91,7 @@ Test::Ika provides some reporters.
 
         it 'should detect message', $cond => sub {
             my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
+            ok $filter->detect('hello foo');
         };
 
 - `when(\&code)`
@@ -100,37 +102,51 @@ Test::Ika provides some reporters.
 
         it 'should detect message', when { $ENV{TEST_MESSAGE} } => sub {
             my $filter = MessageFilter->new('foo');
-            expect($filter->detect('hello foo'))->ok;
+            ok $filter->detect('hello foo');
         };
 
 - `xit($name, \&code)`
 - `xit($name, $cond, \&code)`
 
-    Create new [Test::Ika::Example](http://search.cpan.org/perldoc?Test::Ika::Example) which marked "disabled".
+    Create new [Test::Ika::Example](https://metacpan.org/pod/Test::Ika::Example) which marked "disabled".
 
 - `before_suite(\&code)`
 
-    Register hook.
+    Register hook for before running suite.
 
 - `before_all(\&code)`
 
-    Register hook.
+    Register hook for before running example group.
 
 - `before_each(\&code)`
 
-    Register hook.
+    Register hook for before running each examples.
+
+    This block can receive example and example group.
+
+        before_each {
+            my ($example, $group) = @_;
+            # ...
+        };
 
 - `after_suite(\&code)`
 
-    Register hook.
+    Register hook for after running suite.
 
 - `after_all(\&code)`
 
-    Register hook.
+    Register hook for after running example group.
 
 - `after_each(\&code)`
 
-    Register hook.
+    Register hook for after running each examples.
+
+    This block can receive example and example group.
+
+        after_each {
+            my ($example, $group) = @_;
+            # ...
+        };
 
 - `runtests()`
 
@@ -154,11 +170,11 @@ Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>
 
 # SEE ALSO
 
-[Test::Spec](http://search.cpan.org/perldoc?Test::Spec)
+[Test::Spec](https://metacpan.org/pod/Test::Spec)
 
-[Test::Behavior::Spec](http://search.cpan.org/perldoc?Test::Behavior::Spec)
+[Test::Behavior::Spec](https://metacpan.org/pod/Test::Behavior::Spec)
 
-[Test::More::Behaviours](http://search.cpan.org/perldoc?Test::More::Behaviours)
+[Test::More::Behaviours](https://metacpan.org/pod/Test::More::Behaviours)
 
 # LICENSE
 
