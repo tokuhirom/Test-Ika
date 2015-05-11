@@ -5,6 +5,7 @@ use Test::More;
 use Test::Ika::Reporter::Spec;
 use Test::Ika::Reporter::TAP;
 use Test::Ika::Reporter::Test;
+use Test::Ika::Reporter::JUnit;
 
 check('Test::Ika::Reporter::TAP');
 check('Test::Ika::Reporter::Test');
