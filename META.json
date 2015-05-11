@@ -53,6 +53,9 @@
             "Test::More" : "0.98",
             "Test::Name::FromLine" : "0.06",
             "Try::Tiny" : "0",
+            "IO::Scalar" : "0",
+            "Time::HiRes" : "0",
+            "XML::Simple" : "0",
             "parent" : "0",
             "perl" : "5.010001"
          }
@@ -76,8 +79,9 @@
          "web" : "https://github.com/tokuhirom/Test-Ika"
       }
    },
-   "version" : "0.08",
+   "version" : "0.09",
    "x_contributors" : [
+      "Sahil Singla<er.singlasahil@gmail.com>",
       "Ryoichi SEKIGUCHI <ryopeko+free@gmail.com>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
       "Masaki Nakagawa <masaki.nakagawa@gmail.com>"
