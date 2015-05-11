@@ -8,6 +8,7 @@ use Test::Ika::Reporter::Test;
 
 check('Test::Ika::Reporter::TAP');
 check('Test::Ika::Reporter::Test');
+check('Test::Ika::Reporter::JUnit');
 
 done_testing;
 
