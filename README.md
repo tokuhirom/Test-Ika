@@ -64,6 +64,8 @@ Test::Ika provides some reporters.
             <img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/tap.png">
     </div>
 
+- The JUnit mode(same console output as that in spec mode, along with XML containing metadata logs for the tests run)
+
 # FUNCTIONS
 
 - `describe($name, $code)`
