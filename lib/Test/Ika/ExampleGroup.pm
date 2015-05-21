@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use Carp ();
 
+use Test::Ika ();
+
 sub new {
     my $class = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
@@ -73,7 +75,16 @@ sub run {
 
     my $name = $self->{name};
     $name .= ' [DISABLED]' if $self->{skip};
-    my $guard = $self->{root} ? undef : $Test::Ika::REPORTER->describe($name);
+
+    #NOTE: A separate object for each reporter is necessary so as to avoid VOID context
+        #    : Cannot be overwritten as the prior one corresponding to earlier reporter's 'describe' calls would be lost
+    my %guard;
+    unless ($self->{root}) {
+        foreach my $reporter (Test::Ika->reporters()) {
+            my $reporter_name = ref $reporter;
+            $guard{$reporter_name} = $reporter->describe($name);
+        }
+    }
 
     unless ($self->{skip}) {
         $self->call_trigger('before_all');
