@@ -11,6 +11,7 @@ requires 'Test::Builder::Module';
 requires 'Test::More', '0.98';
 requires 'Test::Name::FromLine', '0.06';
 requires 'Try::Tiny';
+requires 'List::MoreUtils';
 
 on test => sub {
     requires 'Test::More', '0.98';

@@ -6,6 +6,7 @@ our $VERSION = '0.08';
 
 use Module::Load;
 use Test::Name::FromLine;
+use List::MoreUtils qw(uniq);
 
 use Test::Ika::ExampleGroup;
 use Test::Ika::Example;
@@ -32,6 +33,7 @@ our @REPORTERS;
         $reporter_string = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
     my @modules = split /,/, $reporter_string;
+    @modules = uniq @modules;
 
     __PACKAGE__->set_reporters(@modules);
 }
