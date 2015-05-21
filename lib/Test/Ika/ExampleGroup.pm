@@ -87,7 +87,20 @@ sub run {
     }
 
     unless ($self->{skip}) {
-        $self->call_trigger('before_all');
+        eval {
+            $self->call_trigger('before_all');
+        };
+        if ($@)  {
+            foreach my $reporter (Test::Ika->reporters()) {
+                if ($reporter->can('exception')) {
+                    $reporter->exception("[ERROR_IN_BEFORE_ALL]\n" . $@);
+                } else {
+                    $reporter->it("[ERROR_IN_BEFORE_ALL]", 0, undef, $@);
+                }
+            }
+            return;
+        };
+
         for my $stuff (@{$self->{examples}}) {
             $self->call_before_each_trigger($stuff, $self);
             $stuff->run();
