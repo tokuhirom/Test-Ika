@@ -6,7 +6,7 @@ use Test::Ika;
 use Test::Ika::Reporter::Test;
 use Data::Dumper;
 
-Test::Ika->set_reporter('Test');
+Test::Ika->set_reporters(('Test'));
 {
     use Test::Ika;
     use Test::More;
@@ -26,13 +26,15 @@ Test::Ika->set_reporter('Test');
     };
     runtests;
 }
-my $reporter = Test::Ika->reporter;
-subtest 'check result' => sub {
-    is(0+@{$reporter->report}, 3);
-    is($reporter->report->[0]->[0], 'it');
-    is($reporter->report->[1]->[0], 'it');
-    is($reporter->report->[2]->[0], 'it');
-} or diag(Dumper($reporter->report));
+my @reporters = Test::Ika->reporters;
+foreach my $reporter (@reporters){
+    subtest 'check result' => sub {
+        is(0+@{$reporter->report}, 3);
+        is($reporter->report->[0]->[0], 'it');
+        is($reporter->report->[1]->[0], 'it');
+        is($reporter->report->[2]->[0], 'it');
+    } or diag(Dumper($reporter->report));
+}
 
 
 done_testing;

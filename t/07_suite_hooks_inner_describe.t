@@ -6,7 +6,7 @@ use Test::Ika;
 use Test::Ika::Reporter::Test;
 
 my $reporter = Test::Ika::Reporter::Test->new();
-local $Test::Ika::REPORTER = $reporter;
+local @Test::Ika::REPORTERS = ($reporter);
 my @RESULT;
 {
     package sandbox;
