@@ -27,10 +27,12 @@ our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root', root => 
 
 our @REPORTERS;
 {
-    my @modules = split /,/, $ENV{TEST_MAX_REPORTER};
-    unless (@modules) {
-        push @modules, $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
+    my $reporter_string = $ENV{TEST_MAX_REPORTER};
+    unless ($reporter_string) {
+        $reporter_string = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
+    my @modules = split /,/, $reporter_string;
+
     __PACKAGE__->set_reporters(@modules);
 }
 
