@@ -43,10 +43,13 @@ my @RESULT;
 
 is(join("\n", @RESULT), '');
 
-is scalar @{$reporter->report} => 3;
-like $reporter->report->[0]->[1] => qr/DISABLED/; # normal case is disabled
-like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
-like $reporter->report->[2]->[1] => qr/DISABLED/;
+my @reporters = Test::Ika->reporters;
+foreach my $reporter (@reporters){
+    is scalar @{$reporter->report} => 3;
+    like $reporter->report->[0]->[1] => qr/DISABLED/; # normal case is disabled
+    like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
+    like $reporter->report->[2]->[1] => qr/DISABLED/;
+}
 
 done_testing;
 

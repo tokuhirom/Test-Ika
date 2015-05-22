@@ -6,7 +6,7 @@ use Test::Ika;
 use Test::Ika::Reporter::Test;
 use Data::Dumper;
 
-Test::Ika->set_reporters(('Test'));
+Test::Ika->set_reporters('Test');
 {
     use Test::Ika;
     use Test::More;

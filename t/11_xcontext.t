@@ -82,13 +82,16 @@ is(join("\n", @RESULT), join("\n", (
     'AFTER ALL foo normal',
 )));
 
-is scalar @{$reporter->report} => 6;
-like $reporter->report->[0]->[1] => qr/DISABLED/; # normal case is disabled
-like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
-like $reporter->report->[2]->[1] => qr/DISABLED/;
-unlike $reporter->report->[3]->[1] => qr/DISABLED/; # it is under context
-like $reporter->report->[4]->[1] => qr/NOT IMPLEMENTED/;
-like $reporter->report->[5]->[1] => qr/DISABLED/;
+my @reporters = Test::Ika->reporters;
+foreach my $reporter (@reporters){
+    is scalar @{$reporter->report} => 6;
+    like $reporter->report->[0]->[1] => qr/DISABLED/; # normal case is disabled
+    like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
+    like $reporter->report->[2]->[1] => qr/DISABLED/;
+    unlike $reporter->report->[3]->[1] => qr/DISABLED/; # it is under context
+    like $reporter->report->[4]->[1] => qr/NOT IMPLEMENTED/;
+    like $reporter->report->[5]->[1] => qr/DISABLED/;
+}
 
 done_testing;
 
