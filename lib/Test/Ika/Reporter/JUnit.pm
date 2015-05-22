@@ -4,9 +4,8 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::Ika::Reporter::Spec;
-
 use XML::Simple;
+use Scope::Guard;
 use Time::HiRes qw(gettimeofday tv_interval);
 
 sub new {
