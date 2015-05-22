@@ -16,6 +16,7 @@ sub new {
         time       => [ gettimeofday ],
         test_suite => {},
         describes  => [],
+        to_file    => $args->{to_file} // 0,
     }, $class;
 }
 
@@ -74,12 +75,17 @@ sub finalize {
             testcase => $hash->{cases},
         };
     }
-    XMLout(
-        { testsuite => \%testsuites },
+    my $args = {
         XMLDecl => "<?xml version='1.0' encoding='utf-8'?>",
         RootName => 'testsuites',
-        OutputFile => $ENV{JUNIT_OUTPUT_FILE} // "junitoutput.xml",
+    };
+    $args->{OutputFile} = ($ENV{JUNIT_OUTPUT_FILE} // "junitoutput.xml") if ($self->{to_file});
+
+    my $xml = XMLout(
+        { testsuite => \%testsuites },
+        %$args,
     );
+    print $xml if (!$self->{to_file});
 }
 
 1;
