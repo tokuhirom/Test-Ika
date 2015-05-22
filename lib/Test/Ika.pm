@@ -33,7 +33,6 @@ our @REPORTERS;
         $reporter_string = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
     my @modules = split /,/, $reporter_string;
-    @modules = uniq @modules;
 
     __PACKAGE__->set_reporters(@modules);
 }
@@ -49,7 +48,7 @@ sub build_reporter_option {
 
 sub set_reporters {
     my ($class, @modules) = @_;
-    @REPORTERS = $class->load_reporters(@modules);
+    @REPORTERS = $class->load_reporters(uniq @modules);
 }
 
 sub load_reporters {
