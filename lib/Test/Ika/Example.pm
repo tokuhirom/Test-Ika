@@ -7,6 +7,8 @@ use Carp ();
 use Try::Tiny;
 use Test::Builder;
 
+use Test::Ika ();
+
 { # accessor
     sub name   { $_[0]->{name} }
     sub skip   { $_[0]->{skip} > 0 }
@@ -82,7 +84,9 @@ sub run {
         $self->{output} = $output;
         $self->{error}  = $error;
 
-        $Test::Ika::REPORTER->it($name, $test, $output, $error);
+        foreach my $reporter (Test::Ika->reporters()) {
+            $reporter->it($name, $test, $output, $error);
+        }
     };
 }
 

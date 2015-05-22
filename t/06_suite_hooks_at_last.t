@@ -3,10 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Ika;
-use Test::Ika::Reporter::Test;
 
-my $reporter = Test::Ika::Reporter::Test->new();
-local $Test::Ika::REPORTER = $reporter;
+Test::Ika->set_reporters('Test');
 my @RESULT;
 {
     package sandbox;

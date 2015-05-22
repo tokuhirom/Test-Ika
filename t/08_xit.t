@@ -3,10 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Ika;
-use Test::Ika::Reporter::Test;
 
-my $reporter = Test::Ika::Reporter::Test->new();
-local $Test::Ika::REPORTER = $reporter;
+Test::Ika->set_reporters('Test');
 my @RESULT;
 {
     package sandbox;
@@ -54,9 +52,12 @@ is(join("\n", @RESULT), join("\n", (
     'AFTER ALL foo',
 )));
 
-is scalar @{$reporter->report} => 3;
-like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
-like $reporter->report->[2]->[1] => qr/DISABLED/;
+my @reporters = Test::Ika->reporters;
+foreach my $reporter (@reporters){
+    is scalar @{$reporter->report} => 3;
+    like $reporter->report->[1]->[1] => qr/NOT IMPLEMENTED/;
+    like $reporter->report->[2]->[1] => qr/DISABLED/;
+}
 
 done_testing;
 

@@ -6,6 +6,7 @@ our $VERSION = '0.08';
 
 use Module::Load;
 use Test::Name::FromLine;
+use List::MoreUtils qw(uniq);
 
 use Test::Ika::ExampleGroup;
 use Test::Ika::Example;
@@ -25,16 +26,18 @@ our @EXPORT = (qw(
 our $FINISHED;
 our $ROOT = our $CURRENT = Test::Ika::ExampleGroup->new(name => 'root', root => 1);
 
-our $REPORTER;
+our @REPORTERS;
 {
-    my $module = $ENV{TEST_MAX_REPORTER};
-    unless ($module) {
-        $module = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
+    my $reporter_string = $ENV{TEST_MAX_REPORTER};
+    unless ($reporter_string) {
+        $reporter_string = $ENV{HARNESS_ACTIVE} || $^O eq 'MSWin32' ? 'TAP' : 'Spec';
     }
-    __PACKAGE__->set_reporter($module);
+    my @modules = split /,/, $reporter_string;
+
+    __PACKAGE__->set_reporters(@modules);
 }
 
-sub reporter { $REPORTER }
+sub reporters { @REPORTERS }
 
 sub build_reporter_option {
     my $class = shift;
@@ -43,17 +46,21 @@ sub build_reporter_option {
     };
 }
 
-sub set_reporter {
-    my ($class, $module) = @_;
-    $REPORTER = $class->load_reporter($module);
+sub set_reporters {
+    my ($class, @modules) = @_;
+    @REPORTERS = $class->load_reporters(uniq @modules);
 }
 
-sub load_reporter {
-    my ($class, $module) = @_;
-    $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
-    Module::Load::load($module);
+sub load_reporters {
+    my ($class, @modules) = @_;
+    my @reporters;
+    foreach my $module (@modules) {
+        $module = ($module =~ s/^\+// ? $module : "Test::Ika::Reporter::$module");
+        Module::Load::load($module);
+        push @reporters, $module->new(__PACKAGE__->build_reporter_option);
+    }
 
-    return $module->new(__PACKAGE__->build_reporter_option);
+    return @reporters;
 }
 
 sub describe {
@@ -144,7 +151,9 @@ sub runtests {
     $ROOT->run();
 
     $FINISHED++;
-    $REPORTER->finalize();
+    foreach my $reporter (reporters) {
+        $reporter->finalize();
+    }
 }
 
 END {

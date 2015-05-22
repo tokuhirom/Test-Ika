@@ -6,7 +6,7 @@ use Test::Ika;
 use Test::Ika::Reporter::Test;
 use Data::Dumper;
 
-Test::Ika->set_reporters('Test');
+Test::Ika->set_reporters('Test', 'Test');
 {
     use Test::Ika;
     use Test::More;
@@ -26,7 +26,12 @@ Test::Ika->set_reporters('Test');
     };
     runtests;
 }
+
 my @reporters = Test::Ika->reporters;
+subtest 'unique reporter' => sub {
+    is(0+@reporters, 1);
+};
+
 foreach my $reporter (@reporters){
     subtest 'check result' => sub {
         is(0+@{$reporter->report}, 3);
