@@ -64,6 +64,43 @@ Test::Ika provides some reporters.
             <img src="https://raw.github.com/tokuhirom/Test-Ika/master/img/tap.png">
     </div>
 
+- The JUnit mode creates XML containing metadata logs for the tests run, sans the console output
+
+    ```xml
+    <?xml version='1.0' encoding='utf-8'?>
+    <testsuites>
+        <testsuite name="Array" errors="2" failures="2" tests="3">
+            <testcase name="#push can push to array" time="0.003349">
+                <success></success>
+                <system-err></system-err>
+                <system-out>ok 1 - L31: is($a-&gt;size, 1);
+    </system-out>
+            </testcase>
+            <testcase name="#push put pushed element to tail" time="0.000649">
+                <failure></failure>
+                <system-err></system-err>
+                <system-out>not ok 1 - L37: is($a-&gt;at(0), 1);
+    #   Failed test 'L37: is($a-&gt;at(0), 1);'
+    #   at eg/oops.t line 37.
+    #          got: '2'
+    #     expected: '1'
+    </system-out>
+            </testcase>
+            <testcase name="#map can apply the function to array" time="0.000724">
+                <failure></failure>
+                <system-err></system-err>
+                <system-out>not ok 1 - L45: is_deeply([$a-&gt;map(sub { $_ * 2 })], [2,4]);
+    #   Failed test 'L45: is_deeply([$a-&gt;map(sub { $_ * 2 })], [2,4]);'
+    #   at eg/oops.t line 45.
+    #     Structures begin differing at:
+    #          $got-&gt;[0] = '4'
+    #     $expected-&gt;[0] = '2'
+    </system-out>
+            </testcase>
+        </testsuite>
+    </testsuites>
+    ```
+
 # FUNCTIONS
 
 - `describe($name, $code)`
