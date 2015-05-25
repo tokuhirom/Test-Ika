@@ -8,18 +8,35 @@ use XML::Simple;
 use Scope::Guard;
 use Time::HiRes qw(gettimeofday tv_interval);
 
+use IO::Scalar;
+use Term::ANSIColor;
+
 sub new {
     my ($class, $args) = @_;
 
     return bless {
-        builder    => Test::Ika::Reporter::JUnit::IO->new,
+        buffer     => \my $buffer,
         time       => [ gettimeofday ],
         test_suite => {},
         describes  => [],
     }, $class;
 }
 
-sub builder { shift->{builder} }
+sub output { IO::Scalar->new(shift->{buffer}) }
+
+sub fetch_output {
+    my $self = shift;
+
+    my $tmp = '';
+    if (defined $self->{buffer}) {
+        $tmp = ${$self->{buffer}} || '';
+        $tmp = Term::ANSIColor::colorstrip($tmp);
+
+        $self->{buffer} = \my $buffer;
+    }
+
+    return $tmp;
+}
 
 sub describe {
     my ($self, $name) = @_;
@@ -42,14 +59,14 @@ sub it {
     my $suite_name = @{$self->{describes}}[0];
     $self->{test_suite}->{$suite_name}->{failed} //= 0;
     if ($test > 0) {
-        $exception = $self->builder->fetch_output;
+        $exception = $self->fetch_output;
         @result = (success => {});
     } elsif ($test < 0) {
         @result = (skipped => {});
     } else {
         # not ok
         $self->{test_suite}->{$suite_name}->{failed} += 1;
-        $exception = $self->builder->fetch_output . ($exception || '');
+        $exception = $self->fetch_output . ($exception || '');
         @result = (failure => {});
     }
 
@@ -85,43 +102,6 @@ sub finalize {
         %$args,
     );
     print $xml if (!$ENV{JUNIT_OUTPUT_FILE});
-}
-
-1;
-
-package Test::Ika::Reporter::JUnit::IO;
-
-use IO::Scalar;
-use Term::ANSIColor;
-
-sub new {
-    my $class = shift;
-
-    return bless {
-        buffer => \my $buffer,
-    }, $class;
-}
-
-sub output {
-    return IO::Scalar->new(shift->{buffer});
-}
-
-sub failure_output {
-    return IO::Scalar->new(shift->{buffer});
-}
-
-sub fetch_output {
-    my $self = shift;
-
-    my $tmp = '';
-    if (defined $self->{buffer}) {
-        $tmp = ${$self->{buffer}} || '';
-        $tmp = Term::ANSIColor::colorstrip($tmp);
-
-        $self->{buffer} = \my $buffer;
-    }
-
-    return $tmp;
 }
 
 1;
